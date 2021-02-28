@@ -39,7 +39,57 @@ var expenseModel = mongoose.model("expenses", incomeSchema)
 
 mongoose.connect('mongodb+srv://admin:ppit@cluster0.iemzw.mongodb.net/mms?retryWrites=true&w=majority', { useNewUrlParser: true });
 
+app.get('/incomes', (req, res) => {
 
+    incomeModel.find((err, data) => {
+        res.json(data);
+    })
+})
+
+app.get('/incomes/:id', (req, res) => {
+    console.log(req.params.id);
+
+    incomeModel.findById(req.params.id, (err, data) => {
+        res.json(data);
+    })
+})
+
+app.post('/incomes', (req, res) => {
+    console.log("Your Input has been added");
+    console.log(req.body.title);
+    console.log(req.body.money);
+
+    MyGameModel.create({
+        title: req.body.title,
+        money: req.body.money
+})
+})
+
+app.get('/expenses', (req, res) => {
+
+    incomeModel.find((err, data) => {
+        res.json(data);
+    })
+})
+
+app.get('/expenses/:id', (req, res) => {
+    console.log(req.params.id);
+
+    incomeModel.findById(req.params.id, (err, data) => {
+        res.json(data);
+    })
+})
+
+app.post('/expenses', (req, res) => {
+    console.log("Your Input has been added");
+    console.log(req.body.title);
+    console.log(req.body.money);
+
+    MyGameModel.create({
+        title: req.body.title,
+        money: req.body.money
+})
+})
 
 //Listening on port4000
 app.listen(port, () => {

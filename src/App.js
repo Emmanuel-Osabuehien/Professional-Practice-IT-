@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import {IncomePg} from './pages/IncomePg'
+import { IncomePg } from './pages/IncomePg';
 import { ExpensePg } from './pages/ExpensePg';
 import { Goal } from './pages/Goal';
 import { Home } from './pages/home';
