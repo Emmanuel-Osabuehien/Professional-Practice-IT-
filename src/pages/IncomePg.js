@@ -1,6 +1,5 @@
 
 import Button from 'react-bootstrap/Button'
-import 'react-bootstrap-buttons/dist/react-bootstrap-buttons.css';
 import React from 'react';
 
 export class IncomePg extends React.Component {
@@ -49,8 +48,12 @@ export class IncomePg extends React.Component {
                     Block level button
                 </Button>
 
+                <a>Input money to database here</a>
+                <textarea>
+                </textarea>
+            
                 <br/>
-                <button onClick={this.inputAlert(e)}>Block level button</button>
+                <button>send info</button>
 
                 <a href="/">return to main</a>
             </div>

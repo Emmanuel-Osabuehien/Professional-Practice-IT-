@@ -2,7 +2,15 @@
 import React from 'react';
 import { CarouselItem } from 'react-bootstrap';
 import Carousel from "react-bootstrap/Carousel";
-import "react-bootstrap-carousel/dist/react-bootstrap-carousel.css";
+
+
+/*
+import { goal } from "../images/goal.jpg"; // Tell webpack this JS file uses this image
+import { piggy } from "../images/piggy.jpg";
+import { expense } from "../images/expense.jpg";
+
+
+*/
 
 
 export class Home extends React.Component {
@@ -15,8 +23,8 @@ export class Home extends React.Component {
                     <Carousel.Item>
                         <img
                             className="d-block w-100"
-                            src="holder.js/800x400?text=First slide&bg=373940"
-                            alt="First slide"
+                            src={require("../images/piggy.jpg")}
+                            alt="Income"
                         />
                         <Carousel.Caption>
                             <h3>Welcome</h3>
@@ -25,7 +33,7 @@ export class Home extends React.Component {
                     <Carousel.Item>
                         <img
                             className="d-block w-100"
-                            src="holder.js/800x400?text=Second slide&bg=282c34"
+                            src={require("../images/piggy.jpg")}
                             alt="Second slide"
                         />
 
@@ -37,7 +45,7 @@ export class Home extends React.Component {
                     <Carousel.Item>
                         <img
                             className="d-block w-100"
-                            src="holder.js/800x400?text=Third slide&bg=20232a"
+                            src={require("../images/piggy.jpg")}
                             alt="Third slide"
                         />
 
