@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 
 //Connect to mongoose
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema
 
 //set up 2 schema (income and expense)
 var incomeSchema = new Schema({
@@ -59,15 +59,15 @@ app.post('/incomes', (req, res) => {
     console.log(req.body.title);
     console.log(req.body.money);
 
-    MyGameModel.create({
+    incomeModel.create({
         title: req.body.title,
         money: req.body.money
-})
+    })
 })
 
 app.get('/expenses', (req, res) => {
 
-    incomeModel.find((err, data) => {
+    expenseModel((err, data) => {
         res.json(data);
     })
 })
@@ -85,10 +85,10 @@ app.post('/expenses', (req, res) => {
     console.log(req.body.title);
     console.log(req.body.money);
 
-    MyGameModel.create({
+    expenseModels.create({
         title: req.body.title,
         money: req.body.money
-})
+    })
 })
 
 //Listening on port4000
