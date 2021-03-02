@@ -13,6 +13,15 @@
   }
 }
 
+.CarouselImage {
+  
+  width: 910px;
+  height: 659px;
+  margin: auto;
+
+
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
