@@ -10,7 +10,7 @@ export class ExpensePg extends React.Component {
         this.onChangeTitle = this.onChangeTitle.bind(this);
         this.onChangeMoney = this.onChangeMoney.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-        
+
         this.state = {
             Title: ' ',
             Money: ' '
@@ -36,31 +36,33 @@ export class ExpensePg extends React.Component {
             title: this.state.Title,
             money: this.state.Money
         }
-        alert(inputExpense.title +" Info has been added");
-        alert(inputExpense.money +" Info has been added");
+        alert(inputExpense.title + " Info has been added");
+        alert(inputExpense.money + " Info has been added");
         axios.post('http://localhost:4000/expenses', inputExpense)
             .then((res) => {
                 this.inputAlert();
                 console.log(res);
             })
             .catch((err) => {
-                
+
                 console.log("errr")
                 console.log(err);
             });
     }
 
-    
-
-    inputAlert(e) {
-
-        do {
-            console.log("In here")
-            var inputExpense = prompt("Input your expense", "999999")
-        } while (inputExpense == 0 || inputExpense == null);
-
-        alert("The value you inputted is: " + inputExpense);
+    componentDidMount() {
+        this.hiddenElement();
     }
+    hiddenElement() {
+
+        if (document.getElementById("recurringSelection").value == "no") {
+            var h = document.getElementById("inputCommentsBrand").style.visibility = "hidden";
+        }
+        else;
+
+    }
+
+
 
     //allows html in JAVASCRIPT
     render() {
@@ -90,26 +92,52 @@ export class ExpensePg extends React.Component {
                 <br />
                 <br />
 
-                <Button variant="primary" size="lg" block onClick={this.inputAlert}>
-                    Input Expense
-                </Button>
-
-
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group">
-                        <label>Title: </label>
-                        <input type='text'
-                            className='form-control'
-                            value={this.state.Title}
-                            onChange={this.onChangeTitle}></input>
+                        <label>Expense Details: </label>
+                        <select class="form-control" value={this.state.Title}
+                            onChange={this.onChangeTitle}>
+                            <option>Bills</option>
+                            <option>Insurance</option>
+                            <option>Vehicle Maintenance</option>
+                            <option>Mortgage</option>
+                            <option>Meal Expense</option>
+                            <option>Other</option>
+                        </select>
                     </div>
                     <div className="form-group">
-                        <label>Income: </label>
+                        <label>Expense Amount: </label>
                         <input type='text'
                             className='form-control'
                             value={this.state.Money}
                             onChange={this.onChangeMoney}></input>
                     </div>
+                    <div className="form-group">
+                        <label for="example-date-input" class="col-2 col-form-label">Date</label>
+
+                        <input class="form-control" type="date" value="2011-08-19" id="example-date-input"></input>
+                    </div>
+
+                    <div className="form-group">
+                        <label>Is it a recurring income: </label>
+                        <select class="form-control" id="recurringSelection" >
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+
+                        </select>
+                    </div>
+
+                    <div className="form-group" id="inputCommentsBrand">
+                        <label>Recurring: </label>
+                        <select class="form-control" >
+                            <option>Yearly</option>
+                            <option>Monthly</option>
+                            <option>Weekly</option>
+                            <option>Daily</option>
+                        </select>
+                    </div>
+
+
                     <div className="form-group">
                         <input type='submit'
                             value='Add Info'
