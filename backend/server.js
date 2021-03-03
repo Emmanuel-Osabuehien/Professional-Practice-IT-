@@ -19,6 +19,9 @@ app.use(function (req, res, next) {
 
 app.use(bodyParser.urlencoded({ extended: false }))
 
+// parse application/json
+app.use(bodyParser.json())
+
 
 //Connect to mongoose
 const Schema = mongoose.Schema
@@ -35,7 +38,7 @@ var expenseSchema = new Schema({
 
 
 var incomeModel = mongoose.model("income", incomeSchema)
-var expenseModel = mongoose.model("expenses", incomeSchema)
+var expenseModel = mongoose.model("expenses", expenseSchema)
 
 mongoose.connect('mongodb+srv://admin:ppit@cluster0.iemzw.mongodb.net/mms?retryWrites=true&w=majority', { useNewUrlParser: true });
 
@@ -75,7 +78,7 @@ app.get('/expenses', (req, res) => {
 app.get('/expenses/:id', (req, res) => {
     console.log(req.params.id);
 
-    incomeModel.findById(req.params.id, (err, data) => {
+    expenseModel.findById(req.params.id, (err, data) => {
         res.json(data);
     })
 })
@@ -85,7 +88,7 @@ app.post('/expenses', (req, res) => {
     console.log(req.body.title);
     console.log(req.body.money);
 
-    expenseModels.create({
+    expenseModel.create({
         title: req.body.title,
         money: req.body.money
     })
