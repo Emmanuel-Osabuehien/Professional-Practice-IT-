@@ -1,8 +1,8 @@
                       **PPIT Project RETROSPECTIVE**
 
-**Project Name: ** Money Management Web
-**Team: ** Babajide Olawoye, Emmanuel Osabuehien
-**Supervisor: **  Martin Kenirons
+**Project Name:** Money Management Web
+**Team:** Babajide Olawoye, Emmanuel Osabuehien
+**Supervisor:** Martin Kenirons
 
 
 **What went well**
