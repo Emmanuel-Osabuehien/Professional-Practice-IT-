@@ -1,34 +1,125 @@
 import axios from 'axios';
 import React from 'react';
+import { MDBContainer } from "mdbreact";
+import { Bar } from "react-chartjs-2";
+
 import Button from 'react-bootstrap/Button'
 
 
 export class IncomePg extends React.Component {
+
+    
+
+    
     constructor() {
         super();
+        var jan, feb, mar, apl, may, jun, jul, aug, sept, oct, nov, dec;
         //this.inputAlert = this.inputAlert.bind(this);
 
         this.onChangeTitle = this.onChangeTitle.bind(this);
         this.onChangeMoney = this.onChangeMoney.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.hiddenElement = this.hiddenElement.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
 
         this.state = {
             Title: ' ',
             Money: ' '
         }
+
+        this.stateGraph = {
+            dataBar: {
+                labels: ["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"],
+                datasets: [
+                    {
+                        label: "Income",
+                        data: [12, 19, 3, 5, 2, 3, 5, 6, 7, 2, 1, 9],
+                        backgroundColor: [
+                            "rgba(255, 134,159,0.4)",
+                            "rgba(98,  182, 239,0.4)",
+                            "rgba(255, 218, 128,0.4)",
+                            "rgba(113, 205, 205,0.4)",
+                            "rgba(170, 128, 252,0.4)",
+                            "rgba(255, 177, 101,0.4)",
+                            "rgba(255, 134,159,0.4)",
+                            "rgba(98,  182, 239,0.4)",
+                            "rgba(255, 218, 128,0.4)",
+                            "rgba(113, 205, 205,0.4)",
+                            "rgba(170, 128, 252,0.4)",
+                            "rgba(170, 128, 252,0.4)"
+    
+                        ],
+                        borderWidth: 2,
+                        borderColor: [
+                            "rgba(255, 134, 159, 1)",
+                            "rgba(98,  182, 239, 1)",
+                            "rgba(255, 218, 128, 1)",
+                            "rgba(113, 205, 205, 1)",
+                            "rgba(170, 128, 252, 1)",
+                            "rgba(255, 177, 101, 1)",
+                            "rgba(255, 134, 159, 1)",
+                            "rgba(98,  182, 239, 1)",
+                            "rgba(255, 218, 128, 1)",
+                            "rgba(113, 205, 205, 1)",
+                            "rgba(170, 128, 252, 1)",
+                            "rgba(255, 177, 101, 1)"
+                        ]
+                    }
+                ]
+            },
+            barChartOptions: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    xAxes: [
+                        {
+                            barPercentage: 1,
+                            gridLines: {
+                                display: true,
+                                color: "rgba(0, 0, 0, 0.1)"
+                            }
+                        }
+                    ],
+                    yAxes: [
+                        {
+                            gridLines: {
+                                display: true,
+                                color: "rgba(0, 0, 0, 0.1)"
+                            },
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }
+                    ]
+                }
+            }
+        }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.hiddenElement();
+
+        //retrieve data
+        /*
+        if (data.date > jan && data.date < feb )
+        {jan += data.Money}
+       
+        continue for jan - dec
+        or do for loop if we did months in numerically
+        */
+        
     }
     hiddenElement() {
-        
-        if (document.getElementById("recurringSelection").value == "no"){
-           var h = document.getElementById("inputCommentsBrand").style.visibility = "hidden"; 
+
+        if (document.getElementById("recurringSelection").value == "no") {
+            document.getElementById("inputCommentsBrand").style.display = "none";
         }
-        else;
-        
-     }
+        else {
+            document.getElementById("inputCommentsBrand").style.display = "block";
+        }
+
+    }
+
 
     onChangeTitle(e) {
         this.setState({
@@ -73,26 +164,10 @@ export class IncomePg extends React.Component {
         return (
 
             <div >
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br /><h1>Graph</h1>
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
+                <MDBContainer>
+                    <h3 className="mt-5">Income Chart</h3>
+                    <Bar data={this.stateGraph.dataBar} options={this.stateGraph.barChartOptions} />
+                </MDBContainer>
 
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group">
@@ -121,10 +196,10 @@ export class IncomePg extends React.Component {
 
                     <div className="form-group">
                         <label>Is it a recurring income: </label>
-                        <select  class="form-control"  id ="recurringSelection" >
+                        <select class="form-control" id="recurringSelection" onClick={this.componentDidMount}>
                             <option value="no">No</option>
                             <option value="yes">Yes</option>
-                            
+
                         </select>
                     </div>
 
