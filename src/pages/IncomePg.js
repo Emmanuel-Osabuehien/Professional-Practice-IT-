@@ -18,13 +18,19 @@ export class IncomePg extends React.Component {
 
         this.onChangeTitle = this.onChangeTitle.bind(this);
         this.onChangeMoney = this.onChangeMoney.bind(this);
+        this.onChangeDate = this.onChangeDate.bind(this);
+        this.onChangeReccur = this.onChangeReccur.bind(this);
+        this.onChangeAnnual = this.onChangeAnnual.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.hiddenElement = this.hiddenElement.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
 
         this.state = {
             Title: ' ',
-            Money: ' '
+            Money: ' ',
+            Date: ' ',
+            Reccur: ' ',
+            Annual: ' '
         }
 
         this.stateGraph = {
@@ -133,15 +139,39 @@ export class IncomePg extends React.Component {
         });
     }
 
+    onChangeDate(e) {
+        this.setState({
+            Date: e.target.value
+        });
+    }
+
+    onChangeReccur(e) {
+        this.setState({
+            Reccur: e.target.value
+        });
+    }
+
+    onChangeAnnual(e) {
+        this.setState({
+            Annual: e.target.value
+        });
+    }
+
     onSubmit(e) {
         e.preventDefault();
 
         const inputIncome = {
             title: this.state.Title,
-            money: this.state.Money
+            money: this.state.Money,
+            date: this.state.Date,
+            reccur: this.state.Reccur,
+            annual: this.state.Annual
         }
         alert(inputIncome.title + " Info has been added");
         alert(inputIncome.money + " Info has been added");
+        alert(inputIncome.date + " Info has been added");
+        alert(inputIncome.reccur + " Info has been added");
+        alert(inputIncome.annual + " Info has been added");
         axios.post('http://localhost:4000/incomes', inputIncome)
             .then((res) => {
 
@@ -191,12 +221,16 @@ export class IncomePg extends React.Component {
                     <div className="form-group">
                         <label for="example-date-input" class="col-2 col-form-label">Date</label>
 
-                        <input class="form-control" type="date" value="2011-08-19" id="example-date-input"></input>
+                        <input class="form-control" type="date" value="2011-08-19" id="example-date-input"
+                        value={this.state.Date}
+                        onChange={this.onChangeDate}></input>
                     </div>
 
                     <div className="form-group">
                         <label>Is it a recurring income: </label>
-                        <select class="form-control" id="recurringSelection" onClick={this.componentDidMount}>
+                        <select class="form-control" id="recurringSelection" onClick={this.componentDidMount}
+                        value={this.state.Reccur}
+                        onChange={this.onChangeReccur}>
                             <option value="no">No</option>
                             <option value="yes">Yes</option>
 
@@ -205,7 +239,9 @@ export class IncomePg extends React.Component {
 
                     <div className="form-group" id="inputCommentsBrand">
                         <label>Recurring: </label>
-                        <select class="form-control" >
+                        <select class="form-control" 
+                        value={this.state.Annual}
+                        onChange={this.onChangeAnnual}>
                             <option>Yearly</option>
                             <option>Monthly</option>
                             <option>Weekly</option>

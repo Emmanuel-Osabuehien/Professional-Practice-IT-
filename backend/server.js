@@ -29,11 +29,17 @@ const Schema = mongoose.Schema
 //set up 2 schema (income and expense)
 var incomeSchema = new Schema({
     title: String,
-    money: String
+    money: String,
+    date: String,
+    reccur: String,
+    annual: String
 })
 var expenseSchema = new Schema({
     title: String,
-    money: String
+    money: String,
+    date: String,
+    reccur: String,
+    annual: String
 })
 
 
@@ -61,10 +67,16 @@ app.post('/incomes', (req, res) => {
     console.log("Your Input has been added");
     console.log(req.body.title);
     console.log(req.body.money);
+    console.log(req.body.date);
+    console.log(req.body.reccur);
+    console.log(req.body.annual);
 
     incomeModel.create({
         title: req.body.title,
-        money: req.body.money
+        money: req.body.money,
+        date: req.body.date,
+        reccur: req.body.reccur,
+        annual: req.body.annual
     })
 })
 
@@ -87,10 +99,16 @@ app.post('/expenses', (req, res) => {
     console.log("Your Input has been added");
     console.log(req.body.title);
     console.log(req.body.money);
+    console.log(req.body.date);
+    console.log(req.body.reccur);
+    console.log(req.body.annual);
 
     expenseModel.create({
         title: req.body.title,
-        money: req.body.money
+        money: req.body.money,
+        date: req.body.date,
+        reccur: req.body.reccur,
+        annual: req.body.annual
     })
 })
 
