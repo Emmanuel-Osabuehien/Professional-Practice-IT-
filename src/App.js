@@ -8,6 +8,8 @@ import { IncomePg } from './pages/IncomePg';
 import { ExpensePg } from './pages/ExpensePg';
 import { Goal } from './pages/Goal';
 import { Home } from './pages/home';
+import { IncomeRead } from './pages/IncomeRead';
+import { ExpenseRead } from './pages/ExpenseRead';
 
 class App extends Component {
 
@@ -20,6 +22,8 @@ class App extends Component {
           <Route path='/income' component={IncomePg} exact />
           <Route path='/expense' component={ExpensePg} exact />
           <Route path='/goal' component={Goal} exact />
+          <Route path='/incomeread' component={IncomeRead} exact />
+          <Route path='/expenseread' component={ExpenseRead} exact />
 
         </Switch>
 

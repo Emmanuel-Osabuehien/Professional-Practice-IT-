@@ -43,7 +43,7 @@ var expenseSchema = new Schema({
 })
 
 
-var incomeModel = mongoose.model("income", incomeSchema)
+var incomeModel = mongoose.model("incomes", incomeSchema)
 var expenseModel = mongoose.model("expenses", expenseSchema)
 
 mongoose.connect('mongodb+srv://admin:ppit@cluster0.iemzw.mongodb.net/mms?retryWrites=true&w=majority', { useNewUrlParser: true });

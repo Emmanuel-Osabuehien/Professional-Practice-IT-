@@ -67,6 +67,8 @@ export class Home extends React.Component {
                 <a href="/income">Income Pg</a><br />
                 <a href="/expense">Expense Pg</a><br />
                 <a href="/goal">Goal pg</a><br />
+                <a href="/incomeread">Income List</a><br />
+                <a href="/expenseread">Expense List</a><br />
 
             </div>
         )
