@@ -82,7 +82,7 @@ app.post('/incomes', (req, res) => {
 
 app.get('/expenses', (req, res) => {
 
-    expenseModel((err, data) => {
+    expenseModel.find((err, data) => {
         res.json(data);
     })
 })

@@ -14,13 +14,7 @@ export class ExpenseRead extends React.Component {
     };
 
     componentDidMount() {
-        axios.get('http://localhost:4000/expenses')
-            .then((response) => {
-                this.setState({ expenses: response.data })
-            })
-            .catch((error) => {
-               console.log(error)
-            });
+        this.ReloadData();
     }
 
     ReloadData() {

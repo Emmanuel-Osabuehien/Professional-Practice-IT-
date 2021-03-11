@@ -2,15 +2,13 @@ import axios from 'axios';
 import React from 'react';
 import { MDBContainer } from "mdbreact";
 import { Bar } from "react-chartjs-2";
+import { IncomeList } from "./IncomeList";
 
 import Button from 'react-bootstrap/Button'
 
 
 export class IncomePg extends React.Component {
 
-    
-
-    
     constructor() {
         super();
         var jan, feb, mar, apl, may, jun, jul, aug, sept, oct, nov, dec;
@@ -24,7 +22,7 @@ export class IncomePg extends React.Component {
         this.onSubmit = this.onSubmit.bind(this);
         this.hiddenElement = this.hiddenElement.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
-
+        this.ReloadData = this.ReloadData.bind(this);
         this.state = {
             Title: ' ',
             Money: ' ',
@@ -53,7 +51,7 @@ export class IncomePg extends React.Component {
                             "rgba(113, 205, 205,0.4)",
                             "rgba(170, 128, 252,0.4)",
                             "rgba(170, 128, 252,0.4)"
-    
+
                         ],
                         borderWidth: 2,
                         borderColor: [
@@ -100,10 +98,18 @@ export class IncomePg extends React.Component {
                 }
             }
         }
+        this.stateRead = {
+            incomes: []
+        }
+
     }
+
+
+
 
     componentDidMount() {
         this.hiddenElement();
+        this.ReloadData();
 
         //retrieve data
         /*
@@ -113,7 +119,7 @@ export class IncomePg extends React.Component {
         continue for jan - dec
         or do for loop if we did months in numerically
         */
-        
+
     }
     hiddenElement() {
 
@@ -155,6 +161,16 @@ export class IncomePg extends React.Component {
         this.setState({
             Annual: e.target.value
         });
+    }
+
+    ReloadData() {
+        axios.get('http://localhost:4000/incomes')
+            .then((response) => {
+                this.setState({ incomes: response.data })
+            })
+            .catch((error) => {
+                console.log(error)
+            });
     }
 
     onSubmit(e) {
@@ -222,15 +238,15 @@ export class IncomePg extends React.Component {
                         <label for="example-date-input" class="col-2 col-form-label">Date</label>
 
                         <input class="form-control" type="date" value="2011-08-19" id="example-date-input"
-                        value={this.state.Date}
-                        onChange={this.onChangeDate}></input>
+                            value={this.state.Date}
+                            onChange={this.onChangeDate}></input>
                     </div>
 
                     <div className="form-group">
                         <label>Is it a recurring income: </label>
                         <select class="form-control" id="recurringSelection" onClick={this.componentDidMount}
-                        value={this.state.Reccur}
-                        onChange={this.onChangeReccur}>
+                            value={this.state.Reccur}
+                            onChange={this.onChangeReccur}>
                             <option value="no">No</option>
                             <option value="yes">Yes</option>
 
@@ -239,9 +255,9 @@ export class IncomePg extends React.Component {
 
                     <div className="form-group" id="inputCommentsBrand">
                         <label>Recurring: </label>
-                        <select class="form-control" 
-                        value={this.state.Annual}
-                        onChange={this.onChangeAnnual}>
+                        <select class="form-control"
+                            value={this.state.Annual}
+                            onChange={this.onChangeAnnual}>
                             <option>Yearly</option>
                             <option>Monthly</option>
                             <option>Weekly</option>
@@ -256,6 +272,11 @@ export class IncomePg extends React.Component {
                             className='btn btn-primary'></input>
                     </div>
                 </form>
+
+                <h2>eeeee</h2>
+                    <IncomeList incomes={this.stateRead.incomes} ReloadData={this.ReloadData}></IncomeList>
+                
+
             </div>
         );
     }

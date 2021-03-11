@@ -14,13 +14,7 @@ export class IncomeRead extends React.Component {
     };
 
     componentDidMount() {
-        axios.get('http://localhost:4000/incomes')
-            .then((response) => {
-                this.setState({ incomes: response.data })
-            })
-            .catch((error) => {
-               console.log(error)
-            });
+        this.ReloadData();
     }
 
     ReloadData() {
