@@ -5,15 +5,39 @@ export class IncomeList extends React.Component {
 
     constructor() {
         super();
-        
+        this.covertDate = this.covertDate.bind(this);
+    }
+
+    covertDate(date) {
+        var myDateMonth = [];
+        let monthPlace = 5;
+
+
+        for (let index = 0; index < 2; index++) {
+            myDateMonth[index] = date.charAt(monthPlace);
+            monthPlace++;
+        }
+
+        return myDateMonth;
+
     }
 
     render() {
         return this.props.incomes.map((income) => {
 
-            if(income.date.localeCompare("2021-03-01") == 0 ){
+            var myDateMonth = [];
+            var jan = ["0", "1"];
 
-            return <IncomeFormat income={income} ReloadData={this.props.ReloadData}></IncomeFormat>
+            myDateMonth = this.covertDate(income.date);
+            console.log(myDateMonth);
+
+            if (JSON.stringify(myDateMonth) == JSON.stringify(jan)) {
+
+                return <IncomeFormat income={income} ReloadData={this.props.ReloadData}></IncomeFormat>
+            }
+
+            else {
+                console.log("ERROR")
             }
         })
     }
