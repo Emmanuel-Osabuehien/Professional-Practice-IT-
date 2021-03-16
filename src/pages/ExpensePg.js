@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React from 'react';
-import Button from 'react-bootstrap/Button'
+import { ExpenseList } from './ExpenseList';
 import { MDBContainer } from "mdbreact";
 import { Bar } from "react-chartjs-2";
 
@@ -15,6 +15,11 @@ export class ExpensePg extends React.Component {
         this.onChangeAnnual = this.onChangeAnnual.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.hiddenElement = this.hiddenElement.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
+        this.ReloadData = this.ReloadData.bind(this);
+        this.covertDate = this.covertDate.bind(this);
+        this.displayMyMoney = this.displayMyMoney.bind(this);
+        this.updateData = this.updateData.bind(this);
 
 
         this.state = {
@@ -22,45 +27,20 @@ export class ExpensePg extends React.Component {
             Money: ' ',
             Date: ' ',
             Reccur: ' ',
-            Annual: ' '
+            Annual: ' ',
+            expenses: []
         }
+
         this.stateGraph = {
             dataBar: {
-                labels: ["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"],
+                labels: [],
                 datasets: [
                     {
-                        label: "Income",
-                        data: [12, 19, 3, 5, 2, 3, 5, 6, 7, 2, 1, 9],
-                        backgroundColor: [
-                            "rgba(255, 134,159,0.4)",
-                            "rgba(98,  182, 239,0.4)",
-                            "rgba(255, 218, 128,0.4)",
-                            "rgba(113, 205, 205,0.4)",
-                            "rgba(170, 128, 252,0.4)",
-                            "rgba(255, 177, 101,0.4)",
-                            "rgba(255, 134,159,0.4)",
-                            "rgba(98,  182, 239,0.4)",
-                            "rgba(255, 218, 128,0.4)",
-                            "rgba(113, 205, 205,0.4)",
-                            "rgba(170, 128, 252,0.4)",
-                            "rgba(170, 128, 252,0.4)"
-
-                        ],
+                        label: "Expense",
+                        data: [],
+                        backgroundColor: [],
                         borderWidth: 2,
-                        borderColor: [
-                            "rgba(255, 134, 159, 1)",
-                            "rgba(98,  182, 239, 1)",
-                            "rgba(255, 218, 128, 1)",
-                            "rgba(113, 205, 205, 1)",
-                            "rgba(170, 128, 252, 1)",
-                            "rgba(255, 177, 101, 1)",
-                            "rgba(255, 134, 159, 1)",
-                            "rgba(98,  182, 239, 1)",
-                            "rgba(255, 218, 128, 1)",
-                            "rgba(113, 205, 205, 1)",
-                            "rgba(170, 128, 252, 1)",
-                            "rgba(255, 177, 101, 1)"
-                        ]
+                        borderColor: []
                     }
                 ]
             },
@@ -92,9 +72,20 @@ export class ExpensePg extends React.Component {
             }
         }
     }
+    
+    componentDidMount() {
+        this.hiddenElement();
+        this.ReloadData();
+        //retrieve data
+        /*
+        if (data.date > jan && data.date < feb )
+        {jan += data.Money}
+       
+        continue for jan - dec
+        or do for loop if we did months in numerically
+        */
 
-
-
+    }
 
     onChangeTitle(e) {
         this.setState({
@@ -153,19 +144,22 @@ export class ExpensePg extends React.Component {
             });
     }
 
-    componentDidMount() {
-        this.hiddenElement();
 
-        //retrieve data
-        /*
-        if (data.date > jan && data.date < feb )
-        {jan += data.Money}
-       
-        continue for jan - dec
-        or do for loop if we did months in numerically
-        */
 
+    ReloadData() {
+        axios.get('http://localhost:4000/expenses')
+            .then((response) => {
+                this.setState({ expenses: response.data })
+                alert("hello");
+                //this.displayMyMoney();
+            })
+            .catch((error) => {
+                console.log(error)
+
+            });
     }
+
+
 
     hiddenElement() {
 
@@ -177,8 +171,143 @@ export class ExpensePg extends React.Component {
         }
 
     }
+    onSubmit(e) {
+        e.preventDefault();
+
+        const inputIncome = {
+            title: this.state.Title,
+            money: this.state.Money,
+            date: this.state.Date,
+            reccur: this.state.Reccur,
+            annual: this.state.Annual
+        }
+        alert(inputIncome.title + " Info has been added");
+        alert(inputIncome.money + " Info has been added");
+        alert(inputIncome.date + " Info has been added");
+        alert(inputIncome.reccur + " Info has been added");
+        alert(inputIncome.annual + " Info has been added");
+        axios.post('http://localhost:4000/incomes', inputIncome)
+            .then((res) => {
+
+                console.log(res);
+            })
+            .catch((err) => {
+
+                console.log("errr")
+                console.log(err);
+            });
+    }
+
+    covertDate(date) {
+        var myDateMonth = [];
+        let monthPlace = 5;
 
 
+        for (let index = 0; index < 2; index++) {
+            myDateMonth[index] = date.charAt(monthPlace);
+            monthPlace++;
+        }
+
+        return myDateMonth;
+
+    }
+
+    displayMyMoney(month) {
+
+        var arrayLenght = this.state.expenses.length;
+        var myDateMonth;
+
+        var monthMoney = 0;
+
+        for (let i = 0; i < arrayLenght; i++) {
+            myDateMonth = this.covertDate(this.state.expenses[i].date);
+
+
+            //console.log(myDateMonth);
+
+            if (JSON.stringify(myDateMonth) == JSON.stringify(month)) {
+
+                monthMoney += this.state.expenses[i].money;
+                console.log(monthMoney);
+
+            }
+        }
+        return monthMoney;
+
+    }
+
+
+    updateData() {
+        var jan = ['0', '1'];
+        var feb = ['0', '2'];
+        var mar = ['0', '3'];
+        var apl = ['0', '4'];
+        var may = ['0', '5'];
+        var jun = ['0', '6'];
+        var jul = ['0', '7'];
+        var aug = ['0', '8'];
+        var sept = ['0', '9'];
+        var oct = ['1', '0'];
+        var nov = ['1', '1'];
+        var dec = ['1', '2'];
+        var janMoney, febMoney, marMoneey, aprMoney, mayMoney, junMoney, julMoney,
+            augMoney, sepMoney, octMoney, novMoney, decMoney;
+
+        janMoney = this.displayMyMoney(jan);
+        febMoney = this.displayMyMoney(feb);
+        marMoneey = this.displayMyMoney(mar);
+        aprMoney = this.displayMyMoney(apl);
+        mayMoney = this.displayMyMoney(may);
+        junMoney = this.displayMyMoney(jun);
+        julMoney = this.displayMyMoney(jul);
+        augMoney = this.displayMyMoney(aug);
+        sepMoney = this.displayMyMoney(sept);
+        octMoney = this.displayMyMoney(oct);
+        novMoney = this.displayMyMoney(nov);
+        decMoney = this.displayMyMoney(dec);
+
+
+        var data = {
+            labels: ["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"],
+            datasets: [
+                {
+                    label: "Income",
+                    data: [janMoney, febMoney, marMoneey, aprMoney, mayMoney, junMoney, julMoney, augMoney, sepMoney, octMoney, novMoney, decMoney],
+                    backgroundColor: [
+                        "rgba(255, 134,159,0.4)",
+                        "rgba(98,  182, 239,0.4)",
+                        "rgba(255, 218, 128,0.4)",
+                        "rgba(113, 205, 205,0.4)",
+                        "rgba(170, 128, 252,0.4)",
+                        "rgba(255, 177, 101,0.4)",
+                        "rgba(255, 134,159,0.4)",
+                        "rgba(98,  182, 239,0.4)",
+                        "rgba(255, 218, 128,0.4)",
+                        "rgba(113, 205, 205,0.4)",
+                        "rgba(170, 128, 252,0.4)",
+                        "rgba(170, 128, 252,0.4)"
+
+                    ],
+                    borderWidth: 2,
+                    borderColor: [
+                        "rgba(255, 134, 159, 1)",
+                        "rgba(98,  182, 239, 1)",
+                        "rgba(255, 218, 128, 1)",
+                        "rgba(113, 205, 205, 1)",
+                        "rgba(170, 128, 252, 1)",
+                        "rgba(255, 177, 101, 1)",
+                        "rgba(255, 134, 159, 1)",
+                        "rgba(98,  182, 239, 1)",
+                        "rgba(255, 218, 128, 1)",
+                        "rgba(113, 205, 205, 1)",
+                        "rgba(170, 128, 252, 1)",
+                        "rgba(255, 177, 101, 1)"
+                    ]
+                }
+            ]
+        }
+        return data;
+    }
 
     //allows html in JAVASCRIPT
     render() {
@@ -188,14 +317,14 @@ export class ExpensePg extends React.Component {
 
             <div >
                 <MDBContainer>
-                    <h3 className="mt-5">Income Chart</h3>
-                    <Bar data={this.stateGraph.dataBar} options={this.stateGraph.barChartOptions} />
+                    <h3 className="mt-5">Expense Chart</h3>
+                    <Bar data={this.updateData} options={this.stateGraph.barChartOptions} />
                 </MDBContainer>
 
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group">
                         <label>Expense Details: </label>
-                        <select class="form-control" value={this.state.Title}
+                        <select className="form-control" value={this.state.Title}
                             onChange={this.onChangeTitle}>
                             <option>Bills</option>
                             <option>Insurance</option>
@@ -213,16 +342,16 @@ export class ExpensePg extends React.Component {
                             onChange={this.onChangeMoney}></input>
                     </div>
                     <div className="form-group">
-                        <label for="example-date-input" class="col-2 col-form-label">Date</label>
+                        <label foreach="example-date-input" className="col-2 col-form-label">Date</label>
 
-                        <input class="form-control" type="date" value="2011-08-19" id="example-date-input"
+                        <input className="form-control" type="date" value="2011-08-19" id="example-date-input"
                             value={this.state.Date}
                             onChange={this.onChangeDate}></input>
                     </div>
 
                     <div className="form-group">
                         <label>Is it a recurring income: </label>
-                        <select class="form-control" id="recurringSelection" onClick={this.hiddenElement}
+                        <select className="form-control" id="recurringSelection" onClick={this.hiddenElement}
                             value={this.state.Reccur}
                             onChange={this.onChangeReccur}>
                             <option value="no">No</option>
@@ -233,7 +362,7 @@ export class ExpensePg extends React.Component {
 
                     <div className="form-group" id="inputCommentsBrand">
                         <label>Recurring: </label>
-                        <select class="form-control"
+                        <select className="form-control"
                             value={this.state.Annual}
                             onChange={this.onChangeAnnual}>
                             <option>Yearly</option>
@@ -250,6 +379,7 @@ export class ExpensePg extends React.Component {
                             className='btn btn-primary'></input>
                     </div>
                 </form>
+
             </div>
         );
     }
