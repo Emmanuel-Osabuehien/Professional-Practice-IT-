@@ -1,10 +1,12 @@
 import axios from 'axios';
 import React from 'react';
 import { MDBContainer } from "mdbreact";
-import { Bar } from "react-chartjs-2";
+import { Bar, Chart } from "react-chartjs-2";
 import { IncomeList } from "./IncomeList";
+import { IncomeRead } from "./IncomeRead";
 
 import Button from 'react-bootstrap/Button'
+import { data } from 'jquery';
 
 
 export class IncomePg extends React.Component {
@@ -23,7 +25,10 @@ export class IncomePg extends React.Component {
         this.hiddenElement = this.hiddenElement.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
         this.ReloadData = this.ReloadData.bind(this);
-        this.state = {
+        this.displayMyMoney = this.displayMyMoney.bind(this);
+        this.covertDate = this.covertDate.bind(this);
+        this.getGraphData = this.getGraphData.bind(this);
+        this.stateInput = {
             Title: ' ',
             Money: ' ',
             Date: ' ',
@@ -37,7 +42,7 @@ export class IncomePg extends React.Component {
                 datasets: [
                     {
                         label: "Income",
-                        data: [12, 19, 3, 5, 2, 3, 5, 6, 7, 2, 1, 9],
+                        data: [this.janMoney, 19, 3, 5, 2, 3, 5, 6, 7, 2, 1, 9],
                         backgroundColor: [
                             "rgba(255, 134,159,0.4)",
                             "rgba(98,  182, 239,0.4)",
@@ -98,9 +103,11 @@ export class IncomePg extends React.Component {
                 }
             }
         }
-        this.stateRead = {
+        this.state = {
             incomes: []
         }
+
+        this.janMoney = 0;
 
     }
 
@@ -167,6 +174,8 @@ export class IncomePg extends React.Component {
         axios.get('http://localhost:4000/incomes')
             .then((response) => {
                 this.setState({ incomes: response.data })
+                //this.displayMyMoney();
+                
             })
             .catch((error) => {
                 console.log(error)
@@ -200,7 +209,87 @@ export class IncomePg extends React.Component {
             });
     }
 
+    covertDate(date) {
+        var myDateMonth = [];
+        let monthPlace = 5;
 
+
+        for (let index = 0; index < 2; index++) {
+            myDateMonth[index] = date.charAt(monthPlace);
+            monthPlace++;
+        }
+
+        return myDateMonth;
+
+    }
+
+    displayMyMoney(month) {
+        
+        var arrayLenght = this.state.incomes.length;
+        var myDateMonth;
+        var jan = ["0", "1"];
+             
+        for (let i = 0; i < arrayLenght; i++) {
+            myDateMonth = this.covertDate(this.state.incomes[i].date);
+    
+    
+            //console.log(myDateMonth);
+    
+            if (JSON.stringify(myDateMonth) == JSON.stringify(month)) {
+               
+                    this.janMoney += this.state.incomes[i].money;
+                    console.log(this.janMoney);
+            
+            }
+        }
+
+        var data = {
+            labels: ["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"],
+            datasets: [
+                {
+                    label: "Income",
+                    data: [this.janMoney, 19, 3, 5, 2, 3, 5, 6, 7, 2, 1, 9],
+                    backgroundColor: [
+                        "rgba(255, 134,159,0.4)",
+                        "rgba(98,  182, 239,0.4)",
+                        "rgba(255, 218, 128,0.4)",
+                        "rgba(113, 205, 205,0.4)",
+                        "rgba(170, 128, 252,0.4)",
+                        "rgba(255, 177, 101,0.4)",
+                        "rgba(255, 134,159,0.4)",
+                        "rgba(98,  182, 239,0.4)",
+                        "rgba(255, 218, 128,0.4)",
+                        "rgba(113, 205, 205,0.4)",
+                        "rgba(170, 128, 252,0.4)",
+                        "rgba(170, 128, 252,0.4)"
+
+                    ],
+                    borderWidth: 2,
+                    borderColor: [
+                        "rgba(255, 134, 159, 1)",
+                        "rgba(98,  182, 239, 1)",
+                        "rgba(255, 218, 128, 1)",
+                        "rgba(113, 205, 205, 1)",
+                        "rgba(170, 128, 252, 1)",
+                        "rgba(255, 177, 101, 1)",
+                        "rgba(255, 134, 159, 1)",
+                        "rgba(98,  182, 239, 1)",
+                        "rgba(255, 218, 128, 1)",
+                        "rgba(113, 205, 205, 1)",
+                        "rgba(170, 128, 252, 1)",
+                        "rgba(255, 177, 101, 1)"
+                    ]
+                }
+            ]
+        }
+        return data;
+    }
+
+    getGraphData(){
+        var data = this.displayMyMoney(['0', '1']);
+
+        return data; 
+    }
 
 
     //allows html in JAVASCRIPT
@@ -210,15 +299,18 @@ export class IncomePg extends React.Component {
         return (
 
             <div >
+
+                <IncomeList incomes={this.state.incomes} ReloadData={this.ReloadData}></IncomeList>
+
                 <MDBContainer>
                     <h3 className="mt-5">Income Chart</h3>
-                    <Bar data={this.stateGraph.dataBar} options={this.stateGraph.barChartOptions} />
+                    <Bar data={this.getGraphData} options={this.stateGraph.barChartOptions} />
                 </MDBContainer>
 
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group">
                         <label>Income Details: </label>
-                        <select class="form-control" value={this.state.Title}
+                        <select className="form-control" value={this.stateInput.Title}
                             onChange={this.onChangeTitle}>
                             <option>Salary</option>
                             <option>Income from self employment</option>
@@ -231,21 +323,21 @@ export class IncomePg extends React.Component {
                         <label>Income Amount: </label>
                         <input type='text'
                             className='form-control'
-                            value={this.state.Money}
+                            value={this.stateInput.Money}
                             onChange={this.onChangeMoney}></input>
                     </div>
                     <div className="form-group">
-                        <label for="example-date-input" class="col-2 col-form-label">Date</label>
+                        <label htmlFor="example-date-input" className="col-2 col-form-label">Date</label>
 
-                        <input class="form-control" type="date" value="2011-08-19" id="example-date-input"
-                            value={this.state.Date}
+                        <input className="form-control" type="date" value="2011-08-19" id="example-date-input"
+                            value={this.stateInput.Date}
                             onChange={this.onChangeDate}></input>
                     </div>
 
                     <div className="form-group">
                         <label>Is it a recurring income: </label>
-                        <select class="form-control" id="recurringSelection" onClick={this.componentDidMount}
-                            value={this.state.Reccur}
+                        <select className="form-control" id="recurringSelection" onClick={this.componentDidMount}
+                            value={this.stateInput.Reccur}
                             onChange={this.onChangeReccur}>
                             <option value="no">No</option>
                             <option value="yes">Yes</option>
@@ -255,8 +347,8 @@ export class IncomePg extends React.Component {
 
                     <div className="form-group" id="inputCommentsBrand">
                         <label>Recurring: </label>
-                        <select class="form-control"
-                            value={this.state.Annual}
+                        <select className="form-control"
+                            value={this.stateInput.Annual}
                             onChange={this.onChangeAnnual}>
                             <option>Yearly</option>
                             <option>Monthly</option>
@@ -274,9 +366,6 @@ export class IncomePg extends React.Component {
                 </form>
 
                 <h2>eeeee</h2>
-                    <IncomeList incomes={this.stateRead.incomes} ReloadData={this.ReloadData}></IncomeList>
-                
-
             </div>
         );
     }

@@ -7,6 +7,7 @@ export class IncomeFormat extends React.Component {
         super();
 
     }
+    
 
     render() {
         return (

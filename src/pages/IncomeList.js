@@ -5,40 +5,43 @@ export class IncomeList extends React.Component {
 
     constructor() {
         super();
-        this.covertDate = this.covertDate.bind(this);
+        //this.covertDate = this.covertDate.bind(this);
     }
 
-    covertDate(date) {
-        var myDateMonth = [];
-        let monthPlace = 5;
+    // covertDate(date) {
+    //     var myDateMonth = [];
+    //     let monthPlace = 5;
 
 
-        for (let index = 0; index < 2; index++) {
-            myDateMonth[index] = date.charAt(monthPlace);
-            monthPlace++;
-        }
+    //     for (let index = 0; index < 2; index++) {
+    //         myDateMonth[index] = date.charAt(monthPlace);
+    //         monthPlace++;
+    //     }
 
-        return myDateMonth;
+    //     return myDateMonth;
 
-    }
+    // }
 
     render() {
         return this.props.incomes.map((income) => {
+            return <IncomeFormat income={income} ReloadData={this.props.ReloadData}></IncomeFormat>
 
-            var myDateMonth = [];
-            var jan = ["0", "1"];
+            // var myDateMonth = [];
+            // var jan = ["0", "1"];
+            // var janMoney;
 
-            myDateMonth = this.covertDate(income.date);
-            console.log(myDateMonth);
+            // myDateMonth = this.covertDate(income.date);
+            // console.log(myDateMonth);
 
-            if (JSON.stringify(myDateMonth) == JSON.stringify(jan)) {
+            // if (JSON.stringify(myDateMonth) == JSON.stringify(jan)) {
 
-                return <IncomeFormat income={income} ReloadData={this.props.ReloadData}></IncomeFormat>
-            }
+            //     janMoney = income.money;
+            //     return <IncomeFormat income={income} ReloadData={this.props.ReloadData}></IncomeFormat>
+            // }
 
-            else {
-                console.log("ERROR")
-            }
+            // else {
+            //     console.log("Out of bounded date")
+            // }
         })
     }
 

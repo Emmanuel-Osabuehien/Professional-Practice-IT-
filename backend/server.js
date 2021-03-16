@@ -29,14 +29,14 @@ const Schema = mongoose.Schema
 //set up 2 schema (income and expense)
 var incomeSchema = new Schema({
     title: String,
-    money: String,
+    money: Number,
     date: String,
     reccur: String,
     annual: String
 })
 var expenseSchema = new Schema({
     title: String,
-    money: String,
+    money: Number,
     date: String,
     reccur: String,
     annual: String
