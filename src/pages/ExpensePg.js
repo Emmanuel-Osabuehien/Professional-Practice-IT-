@@ -1,20 +1,12 @@
 import axios from 'axios';
 import React from 'react';
+import { ExpenseList } from './ExpenseList';
 import { MDBContainer } from "mdbreact";
 import { Bar } from "react-chartjs-2";
-import { IncomeList } from "./IncomeList";
-import { IncomeRead } from "./IncomeRead";
-
-
-
-
 
 export class ExpensePg extends React.Component {
-
     constructor() {
         super();
-
-        //this.inputAlert = this.inputAlert.bind(this);
 
         this.onChangeTitle = this.onChangeTitle.bind(this);
         this.onChangeMoney = this.onChangeMoney.bind(this);
@@ -25,17 +17,26 @@ export class ExpensePg extends React.Component {
         this.hiddenElement = this.hiddenElement.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
         this.ReloadData = this.ReloadData.bind(this);
-        this.displayMyMoney = this.displayMyMoney.bind(this);
         this.covertDate = this.covertDate.bind(this);
+        this.displayMyMoney = this.displayMyMoney.bind(this);
         this.updateData = this.updateData.bind(this);
 
-        
+
+        this.state = {
+            Title: ' ',
+            Money: ' ',
+            Date: ' ',
+            Reccur: ' ',
+            Annual: ' ',
+            expenses: []
+        }
+
         this.stateGraph = {
             dataBar: {
                 labels: [],
                 datasets: [
                     {
-                        label: "Income",
+                        label: "Expense",
                         data: [],
                         backgroundColor: [],
                         borderWidth: 2,
@@ -70,25 +71,11 @@ export class ExpensePg extends React.Component {
                 }
             }
         }
-
-        this.state = {
-            Title: ' ',
-            Money: ' ',
-            Date: ' ',
-            Reccur: ' ',
-            Annual: ' ',
-            expenses: []
-        }
-
-
-
     }
-
-
+    
     componentDidMount() {
         this.hiddenElement();
         this.ReloadData();
-
         //retrieve data
         /*
         if (data.date > jan && data.date < feb )
@@ -97,18 +84,6 @@ export class ExpensePg extends React.Component {
         continue for jan - dec
         or do for loop if we did months in numerically
         */
-
-    }
-
-
-    hiddenElement() {
-
-        if (document.getElementById("recurringSelection").value == "no") {
-            document.getElementById("inputCommentsBrand").style.display = "none";
-        }
-        else {
-            document.getElementById("inputCommentsBrand").style.display = "block";
-        }
 
     }
 
@@ -150,16 +125,16 @@ export class ExpensePg extends React.Component {
             money: this.state.Money,
             date: this.state.Date,
             reccur: this.state.Reccur,
-            annual: this.state.Annual
+            annual: this.state.Annual,
         }
         alert(inputExpense.title + " Info has been added");
         alert(inputExpense.money + " Info has been added");
         alert(inputExpense.date + " Info has been added");
         alert(inputExpense.reccur + " Info has been added");
         alert(inputExpense.annual + " Info has been added");
-        axios.post('http://localhost:4000/incomes', inputExpense)
+        axios.post('http://localhost:4000/expenses', inputExpense)
             .then((res) => {
-
+                this.inputAlert();
                 console.log(res);
             })
             .catch((err) => {
@@ -169,21 +144,22 @@ export class ExpensePg extends React.Component {
             });
     }
 
+
+
     ReloadData() {
         axios.get('http://localhost:4000/expenses')
             .then((response) => {
                 this.setState({ expenses: response.data })
+                alert("hello");
                 //this.displayMyMoney();
-
             })
             .catch((error) => {
                 console.log(error)
+
             });
     }
 
 
-<<<<<<< HEAD
-=======
 
     hiddenElement() {
 
@@ -222,7 +198,6 @@ export class ExpensePg extends React.Component {
             });
     }
 
->>>>>>> refs/remotes/origin/main
     covertDate(date) {
         var myDateMonth = [];
         let monthPlace = 5;
@@ -237,15 +212,13 @@ export class ExpensePg extends React.Component {
 
     }
 
-    displayMyMoney() {
+    displayMyMoney(month) {
 
         var arrayLenght = this.state.expenses.length;
         var myDateMonth;
-        var month = ["0", "1"]
 
         var monthMoney = 0;
 
-        console.log(arrayLenght);
         for (let i = 0; i < arrayLenght; i++) {
             myDateMonth = this.covertDate(this.state.expenses[i].date);
 
@@ -336,7 +309,6 @@ export class ExpensePg extends React.Component {
         return data;
     }
 
-
     //allows html in JAVASCRIPT
     render() {
 
@@ -344,34 +316,33 @@ export class ExpensePg extends React.Component {
         return (
 
             <div >
-
-
                 <MDBContainer>
-                    <h3 className="mt-5">Income Chart</h3>
+                    <h3 className="mt-5">Expense Chart</h3>
                     <Bar data={this.updateData} options={this.stateGraph.barChartOptions} />
                 </MDBContainer>
 
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group">
-                        <label>Income Details: </label>
+                        <label>Expense Details: </label>
                         <select className="form-control" value={this.state.Title}
                             onChange={this.onChangeTitle}>
-                            <option>Salary</option>
-                            <option>Income from self employment</option>
-                            <option>Social Welfare payments</option>
-                            <option>Income outside EU</option>
+                            <option>Bills</option>
+                            <option>Insurance</option>
+                            <option>Vehicle Maintenance</option>
+                            <option>Mortgage</option>
+                            <option>Meal Expense</option>
                             <option>Other</option>
                         </select>
                     </div>
                     <div className="form-group">
-                        <label>Income Amount: </label>
+                        <label>Expense Amount: </label>
                         <input type='text'
                             className='form-control'
                             value={this.state.Money}
                             onChange={this.onChangeMoney}></input>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="example-date-input" className="col-2 col-form-label">Date</label>
+                        <label foreach="example-date-input" className="col-2 col-form-label">Date</label>
 
                         <input className="form-control" type="date" value="2011-08-19" id="example-date-input"
                             value={this.state.Date}
@@ -380,7 +351,7 @@ export class ExpensePg extends React.Component {
 
                     <div className="form-group">
                         <label>Is it a recurring income: </label>
-                        <select className="form-control" id="recurringSelection" onClick={this.componentDidMount}
+                        <select className="form-control" id="recurringSelection" onClick={this.hiddenElement}
                             value={this.state.Reccur}
                             onChange={this.onChangeReccur}>
                             <option value="no">No</option>
