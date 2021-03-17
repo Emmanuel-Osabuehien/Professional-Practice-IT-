@@ -182,6 +182,47 @@ export class ExpensePg extends React.Component {
     }
 
 
+<<<<<<< HEAD
+=======
+
+    hiddenElement() {
+
+        if (document.getElementById("recurringSelection").value == "no") {
+            document.getElementById("inputCommentsBrand").style.display = "none";
+        }
+        else {
+            document.getElementById("inputCommentsBrand").style.display = "block";
+        }
+
+    }
+    onSubmit(e) {
+        e.preventDefault();
+
+        const inputExpense = {
+            title: this.state.Title,
+            money: this.state.Money,
+            date: this.state.Date,
+            reccur: this.state.Reccur,
+            annual: this.state.Annual
+        }
+        alert(inputExpense.title + " Info has been added");
+        alert(inputExpense.money + " Info has been added");
+        alert(inputExpense.date + " Info has been added");
+        alert(inputExpense.reccur + " Info has been added");
+        alert(inputExpense.annual + " Info has been added");
+        axios.post('http://localhost:4000/expenses', inputExpense)
+            .then((res) => {
+
+                console.log(res);
+            })
+            .catch((err) => {
+
+                console.log("errr")
+                console.log(err);
+            });
+    }
+
+>>>>>>> refs/remotes/origin/main
     covertDate(date) {
         var myDateMonth = [];
         let monthPlace = 5;
