@@ -174,19 +174,19 @@ export class ExpensePg extends React.Component {
     onSubmit(e) {
         e.preventDefault();
 
-        const inputIncome = {
+        const inputExpense = {
             title: this.state.Title,
             money: this.state.Money,
             date: this.state.Date,
             reccur: this.state.Reccur,
             annual: this.state.Annual
         }
-        alert(inputIncome.title + " Info has been added");
-        alert(inputIncome.money + " Info has been added");
-        alert(inputIncome.date + " Info has been added");
-        alert(inputIncome.reccur + " Info has been added");
-        alert(inputIncome.annual + " Info has been added");
-        axios.post('http://localhost:4000/incomes', inputIncome)
+        alert(inputExpense.title + " Info has been added");
+        alert(inputExpense.money + " Info has been added");
+        alert(inputExpense.date + " Info has been added");
+        alert(inputExpense.reccur + " Info has been added");
+        alert(inputExpense.annual + " Info has been added");
+        axios.post('http://localhost:4000/expenses', inputExpense)
             .then((res) => {
 
                 console.log(res);
