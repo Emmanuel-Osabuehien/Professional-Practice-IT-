@@ -25,7 +25,7 @@
 - Spent to much time trying to personalize dialog box
 - Some issues within the coding part
 
-**What action we will take**\
+**What action we will take**
 - This week finish off Sprint 1
 - Complete our reflection so far
 - Next week start off sprint 2
