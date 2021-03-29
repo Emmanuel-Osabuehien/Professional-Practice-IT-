@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 import { MDBContainer } from "mdbreact";
-import { Bar } from "react-chartjs-2";
+import { Bar, Pie } from "react-chartjs-2";
 import { IncomeList } from "./IncomeList";
 import { IncomeRead } from "./IncomeRead";
 
@@ -28,20 +28,9 @@ export class IncomePg extends React.Component {
         this.displayMyMoney = this.displayMyMoney.bind(this);
         this.covertDate = this.covertDate.bind(this);
         this.updateData = this.updateData.bind(this);
+        this.displayincomeDetails = this.displayincomeDetails.bind(this);
 
         this.stateGraph = {
-            dataBar: {
-                labels: [],
-                datasets: [
-                    {
-                        label: "Income",
-                        data: [],
-                        backgroundColor: [],
-                        borderWidth: 2,
-                        borderColor: []
-                    }
-                ]
-            },
             barChartOptions: {
                 responsive: true,
                 maintainAspectRatio: false,
@@ -70,12 +59,14 @@ export class IncomePg extends React.Component {
             }
         }
 
+
+
         this.state = {
             Title: ' ',
             Money: ' ',
             Date: ' ',
-            Reccur: ' ',
-            Annual: ' ',
+            Reccur: 'No',
+            Annual: 'Yearly',
             incomes: []
         }
 
@@ -219,6 +210,25 @@ export class IncomePg extends React.Component {
 
     }
 
+    displayincomeDetails(detail) {
+        var arrayLenght = this.state.incomes.length;
+        var detailMoney = 0;
+        
+        for (let i = 0; i < arrayLenght; i++) {
+            
+            
+            if (detail.localeCompare(this.state.incomes[i].title) == 0) {
+
+                detailMoney += this.state.incomes[i].money;
+                
+
+            }
+        }
+
+
+        return detailMoney;
+    }
+
 
     updateData() {
         var jan = ['0', '1'];
@@ -292,6 +302,56 @@ export class IncomePg extends React.Component {
         return data;
     }
 
+    updateDetailsData = () => {
+
+        var catg1 = "Salary";
+        var catg2 = "Income from self employment";
+        var catg3 = "Social Welfare payments";    
+        var catg4 = "Income outside EU";
+        var catg5 = "Other";
+
+        var cat1Money, cat2Money, cat3Money, cat4Money, cat5Money; 
+
+        cat1Money = this.displayincomeDetails(catg1);
+        cat2Money = this.displayincomeDetails(catg2);
+        cat3Money = this.displayincomeDetails(catg3);
+        cat4Money = this.displayincomeDetails(catg4);
+        cat5Money = this.displayincomeDetails(catg5);
+
+
+        var dataPolar = {
+            datasets: [
+                {
+                    data: [cat1Money, cat2Money, cat3Money, cat4Money, cat5Money],
+                    backgroundColor: [
+                        "rgba(247, 70, 74, 0.5)",
+                        "rgba(70, 191, 189, 0.5)",
+                        "rgba(253, 180, 92, 0.5)",
+                        "rgba(148, 159, 177, 0.5)",
+                        "rgba(77, 83, 96, 0.5)"
+                    ],
+                    label: "My Earnings" // for legend
+                }
+            ],
+            labels: [catg1,catg2, catg3, catg4, catg5 ]
+        }
+
+
+        return dataPolar;
+    }
+
+    // recurringFunc = () => {
+    //     //use for loops
+    //     var arrayLenght = this.state.incomes.length;
+
+    //     for(let i = 0; i < arrayLenght; i++){
+    //         //compare this.state.incomes[i].recurr
+    //         //do if state if recurr equals daily/weekly/etc
+    //         //
+    //     }
+
+    // }
+
 
     //allows html in JAVASCRIPT
     render() {
@@ -364,6 +424,11 @@ export class IncomePg extends React.Component {
                             className='btn btn-primary'></input>
                     </div>
                 </form>
+
+                <MDBContainer>
+                    
+                    <Pie data={this.updateDetailsData} options={{ responsive: true }} />
+                </MDBContainer>
 
             </div>
         );
