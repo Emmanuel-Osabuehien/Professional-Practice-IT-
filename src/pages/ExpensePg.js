@@ -150,7 +150,6 @@ export class ExpensePg extends React.Component {
         axios.get('http://localhost:4000/expenses')
             .then((response) => {
                 this.setState({ expenses: response.data })
-                alert("hello");
                 //this.displayMyMoney();
             })
             .catch((error) => {

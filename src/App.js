@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-
+import { Navbar, Nav, NavLink, Bars, NavMenu, NavBtn, NavBtnLink } from 'react-bootstrap';
 import { IncomePg } from './pages/IncomePg';
 import { ExpensePg } from './pages/ExpensePg';
 import { Goal } from './pages/Goal';
@@ -16,6 +16,17 @@ class App extends Component {
   render() {
     return (
       <Router>
+         <Navbar bg="light" variant="light">
+            <Navbar.Brand href="#home">Money Management System</Navbar.Brand>
+            <Nav className="mr-auto">
+              <Nav.Link href="/">Home</Nav.Link>
+              <Nav.Link href="/income">Enter Income</Nav.Link>
+              <Nav.Link href="/expense">Enter Expenses</Nav.Link>
+              <Nav.Link href="/goal">Goals</Nav.Link>
+              <Nav.Link href="/incomeread">Income List</Nav.Link>
+              <Nav.Link href="/expenseread">Expense List</Nav.Link>
+            </Nav>
+          </Navbar>
 
         <Switch>
           <Route path='/' component={Home} exact />
