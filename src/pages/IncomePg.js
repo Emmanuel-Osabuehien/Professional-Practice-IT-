@@ -197,8 +197,6 @@ export class IncomePg extends React.Component {
             myDateMonth = this.covertDate(this.state.incomes[i].date);
 
 
-            //console.log(myDateMonth);
-
             if (JSON.stringify(myDateMonth) == JSON.stringify(month)) {
 
                 monthMoney += this.state.incomes[i].money;
@@ -245,6 +243,9 @@ export class IncomePg extends React.Component {
         var dec = ['1', '2'];
         var janMoney, febMoney, marMoneey, aprMoney, mayMoney, junMoney, julMoney,
             augMoney, sepMoney, octMoney, novMoney, decMoney;
+
+
+        this.recurringFunc();
 
         janMoney = this.displayMyMoney(jan);
         febMoney = this.displayMyMoney(feb);
@@ -336,21 +337,74 @@ export class IncomePg extends React.Component {
             labels: [catg1,catg2, catg3, catg4, catg5 ]
         }
 
-
         return dataPolar;
     }
 
-    // recurringFunc = () => {
-    //     //use for loops
-    //     var arrayLenght = this.state.incomes.length;
+    reccurMonths = (mydate, repeatType) =>{
 
-    //     for(let i = 0; i < arrayLenght; i++){
-    //         //compare this.state.incomes[i].recurr
-    //         //do if state if recurr equals daily/weekly/etc
-    //         //
-    //     }
+        if (repeatType == 1){
+            
+            var date2 = new Date('12/31/2021');
+            var diffTime = Math.abs(date2 - mydate);
+            var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+            
+            return Math.floor(diffDays/30);
 
-    // }
+        }
+        else if(repeatType == 2){
+           // console.log(mydate);
+            var d = new Date(mydate);
+
+            console.log("Month "+d.getMonth()+1);
+
+            return 11 - Number(d.getMonth()) ;
+
+        }
+        else if(repeatType == 3){
+
+            var date = new Date(mydate);
+            var date2 = new Date('2021-12-31');
+
+            var numday = ((date2 - date)/1000 * 60 * 60 * 24)
+
+            var weeks = Math.ceil((numday + date.getDay()+1) / 7) ; 
+            
+            
+            return weeks;
+
+        }
+    }
+
+    recurringFunc = () => {
+        //use for loops
+        var arrayLenght = this.state.incomes.length;
+        var recurrDaily = "Daily";
+        var recurrMonthly = "Monthly";
+        var recurrWeekly = "Weekly";
+
+        for(let i = 0; i < arrayLenght; i++){
+            //compare this.state.incomes[i].recurr
+            //do if state if recurr equals daily/weekly/etc
+            if (this.state.incomes[i].annual.localeCompare(recurrDaily) ==0){
+               // this.reccurMonths(this.state.incomes[i].date, 1);
+                
+                console.log("Daily ting");
+            }
+            else if (this.state.incomes[i].annual.localeCompare(recurrMonthly) ==0){
+                var num = this.reccurMonths(this.state.incomes[i].date, 2);
+                console.log("Number of months"+num);
+            }
+            else if (this.state.incomes[i].annual.localeCompare(recurrWeekly) == 0){
+                var num = this.reccurMonths(this.state.incomes[i].date, 3);
+                console.log("Week to month " +num);
+            }
+            else{
+                console.log("Yealy ting boyz");
+            }
+            
+        }
+
+    }
 
 
     //allows html in JAVASCRIPT
@@ -389,7 +443,7 @@ export class IncomePg extends React.Component {
                     <div className="form-group">
                         <label htmlFor="example-date-input" className="col-2 col-form-label">Date</label>
 
-                        <input className="form-control" type="date" value="2011-08-19" id="example-date-input"
+                        <input className="form-control" type="date" min="2021-01-01" max="2021-12-31" value="2021-08-19"
                             value={this.state.Date}
                             onChange={this.onChangeDate}></input>
                     </div>
