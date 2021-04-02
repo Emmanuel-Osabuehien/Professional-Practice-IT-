@@ -62,7 +62,7 @@ export class IncomePg extends React.Component {
 
 
         this.state = {
-            Title: ' ',
+            Title: 'Salary',
             Money: ' ',
             Date: ' ',
             Reccur: 'No',
@@ -241,24 +241,73 @@ export class IncomePg extends React.Component {
         var oct = ['1', '0'];
         var nov = ['1', '1'];
         var dec = ['1', '2'];
-        var janMoney, febMoney, marMoneey, aprMoney, mayMoney, junMoney, julMoney,
-            augMoney, sepMoney, octMoney, novMoney, decMoney;
+        var janMoney = 0, febMoney = 0, marMoneey = 0, aprMoney = 0, mayMoney=0, junMoney = 0, julMoney = 0,
+            augMoney = 0, sepMoney = 0, octMoney = 0, novMoney = 0, decMoney = 0;
 
+        
+        var extra = this.recurringFunc();
+        //console.log(extra);
+        //extra = [1, 0];
+        
 
-        this.recurringFunc();
+        if(extra != null){
+            var placement = extra[0] -1;
+
+            while (placement > 0){
+                
+
+                if(placement == 11){
+                    febMoney  += extra[1];
+                }
+                else if(placement == 10){
+                    marMoneey += extra[1];
+                }
+                else if(placement == 9){
+                    aprMoney += extra[1];
+                }
+                else if(placement == 8){
+                    mayMoney += extra[1];
+
+                }
+                else if(placement == 7){
+                    junMoney += extra[1];
+                }
+                else if(placement == 6){
+                    julMoney += extra[1];
+                }
+                else if(placement == 5){
+                    augMoney += extra[1];
+                }
+                else if(placement == 4){
+                    sepMoney += extra[1];
+                }
+                else if(placement == 3){
+                octMoney += extra[1]; 
+                }
+                else if(placement == 2){
+                    novMoney += extra[1];
+                }
+                else if(placement == 1){
+                    decMoney = extra[1];
+                }
+                else;
+                
+                placement--;
+            }
+        }
 
         janMoney = this.displayMyMoney(jan);
-        febMoney = this.displayMyMoney(feb);
-        marMoneey = this.displayMyMoney(mar);
-        aprMoney = this.displayMyMoney(apl);
-        mayMoney = this.displayMyMoney(may);
-        junMoney = this.displayMyMoney(jun);
-        julMoney = this.displayMyMoney(jul);
-        augMoney = this.displayMyMoney(aug);
-        sepMoney = this.displayMyMoney(sept);
-        octMoney = this.displayMyMoney(oct);
-        novMoney = this.displayMyMoney(nov);
-        decMoney = this.displayMyMoney(dec);
+        febMoney += this.displayMyMoney(feb);
+        marMoneey += this.displayMyMoney(mar);
+        aprMoney += this.displayMyMoney(apl);
+        mayMoney += this.displayMyMoney(may);
+        junMoney += this.displayMyMoney(jun);
+        julMoney += this.displayMyMoney(jul);
+        augMoney += this.displayMyMoney(aug);
+        sepMoney += this.displayMyMoney(sept);
+        octMoney += this.displayMyMoney(oct);
+        novMoney += this.displayMyMoney(nov);
+        decMoney += this.displayMyMoney(dec);
 
 
         var data = {
@@ -344,20 +393,21 @@ export class IncomePg extends React.Component {
 
         if (repeatType == 1){
             
+            var date = new Date(mydate);
             var date2 = new Date('12/31/2021');
-            var diffTime = Math.abs(date2 - mydate);
+            var diffTime = Math.abs(date2 - date);
             var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
             
-            return Math.floor(diffDays/30);
+            return Math.floor(diffDays/30) + 1;
 
         }
         else if(repeatType == 2){
            // console.log(mydate);
             var d = new Date(mydate);
 
-            console.log("Month "+d.getMonth()+1);
+            //console.log("Month "+d.getMonth()+1);
 
-            return 11 - Number(d.getMonth()) ;
+            return 12 - Number(d.getMonth()) ;
 
         }
         else if(repeatType == 3){
@@ -365,12 +415,15 @@ export class IncomePg extends React.Component {
             var date = new Date(mydate);
             var date2 = new Date('2021-12-31');
 
-            var numday = ((date2 - date)/1000 * 60 * 60 * 24)
+            var diffTime = Math.abs(date2 - date);
+            var diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)); 
 
-            var weeks = Math.ceil((numday + date.getDay()+1) / 7) ; 
+
+            var weeks = Math.floor((diffDays + date.getDay()+1) / 7) ; 
             
+            var months = Math.floor(weeks/4);
             
-            return weeks;
+            return months;
 
         }
     }
@@ -386,17 +439,28 @@ export class IncomePg extends React.Component {
             //compare this.state.incomes[i].recurr
             //do if state if recurr equals daily/weekly/etc
             if (this.state.incomes[i].annual.localeCompare(recurrDaily) ==0){
-               // this.reccurMonths(this.state.incomes[i].date, 1);
+                var num = this.reccurMonths(this.state.incomes[i].date, 1);
                 
-                console.log("Daily ting");
+                var toDoArray = [num, this.state.incomes[i].money];
+                console.log("Daily month" +num);
+                return toDoArray;
+                
             }
             else if (this.state.incomes[i].annual.localeCompare(recurrMonthly) ==0){
                 var num = this.reccurMonths(this.state.incomes[i].date, 2);
+
+                var toDoArray = [num, this.state.incomes[i].money];
                 console.log("Number of months"+num);
+                return toDoArray;
+                
             }
             else if (this.state.incomes[i].annual.localeCompare(recurrWeekly) == 0){
                 var num = this.reccurMonths(this.state.incomes[i].date, 3);
+
+                var toDoArray = [num, this.state.incomes[i].money];
                 console.log("Week to month " +num);
+                return toDoArray;
+                
             }
             else{
                 console.log("Yealy ting boyz");
