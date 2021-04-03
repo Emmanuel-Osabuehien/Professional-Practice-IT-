@@ -211,14 +211,14 @@ export class IncomePg extends React.Component {
     displayincomeDetails(detail) {
         var arrayLenght = this.state.incomes.length;
         var detailMoney = 0;
-        
+
         for (let i = 0; i < arrayLenght; i++) {
-            
-            
+
+
             if (detail.localeCompare(this.state.incomes[i].title) == 0) {
 
                 detailMoney += this.state.incomes[i].money;
-                
+
 
             }
         }
@@ -227,8 +227,9 @@ export class IncomePg extends React.Component {
         return detailMoney;
     }
 
-
+    //Data going inside bar graph
     updateData() {
+
         var jan = ['0', '1'];
         var feb = ['0', '2'];
         var mar = ['0', '3'];
@@ -241,60 +242,79 @@ export class IncomePg extends React.Component {
         var oct = ['1', '0'];
         var nov = ['1', '1'];
         var dec = ['1', '2'];
-        var janMoney = 0, febMoney = 0, marMoneey = 0, aprMoney = 0, mayMoney=0, junMoney = 0, julMoney = 0,
-            augMoney = 0, sepMoney = 0, octMoney = 0, novMoney = 0, decMoney = 0;
 
-        
-        var extra = this.recurringFunc();
-        //console.log(extra);
+        //Intiallizing variables
+        var janMoney = 0, febMoney = 0, marMoneey = 0, aprMoney = 0, mayMoney = 0, junMoney = 0, julMoney = 0,
+            augMoney = 0, sepMoney = 0, octMoney = 0, novMoney = 0, decMoney = 0;//Moths that are going to graph
+        var placement
+        var place = 0;
+        var arrayLenght = this.state.incomes.length;
+        var extra;
+        //console.log("Loops: "+arrayLenght);
         //extra = [1, 0];
-        
 
-        if(extra != null){
-            var placement = extra[0] -1;
+        //Adding the recurring balance to each month
+        if (arrayLenght != 0) {
 
-            while (placement > 0){
-                
 
-                if(placement == 11){
-                    febMoney  += extra[1];
-                }
-                else if(placement == 10){
-                    marMoneey += extra[1];
-                }
-                else if(placement == 9){
-                    aprMoney += extra[1];
-                }
-                else if(placement == 8){
-                    mayMoney += extra[1];
+            for (let i = 0; i < arrayLenght; i++) {//Loops through the each row in database
 
+                //Returns back array [0] = months(1-12), array[1] = money that is recurring, array[2] = placement of month we aleady added bal to
+                extra = this.recurringFunc(place);
+                if (extra != null) {
+                    placement = extra[0] - 1;
+
+                    while (placement > 0) {
+
+                        if (placement == 11) {
+                            febMoney += extra[1];
+                        }
+                        else if (placement == 10) {
+                            marMoneey += extra[1];
+                        }
+                        else if (placement == 9) {
+                            aprMoney += extra[1];
+                        }
+                        else if (placement == 8) {
+                            mayMoney += extra[1];
+
+                        }
+                        else if (placement == 7) {
+                            junMoney += extra[1];
+                        }
+                        else if (placement == 6) {
+                            julMoney += extra[1];
+                        }
+                        else if (placement == 5) {
+                            augMoney += extra[1];
+                        }
+                        else if (placement == 4) {
+                            sepMoney += extra[1];
+                        }
+                        else if (placement == 3) {
+                            octMoney += extra[1];
+                        }
+                        else if (placement == 2) {
+                            novMoney += extra[1];
+                        }
+                        else if (placement == 1) {
+                            decMoney += extra[1];
+                        }
+                        else;
+
+                        placement--;
+                    }
+
+                    console.log("Placement: " + place);
+                    place = extra[2] + 1;
                 }
-                else if(placement == 7){
-                    junMoney += extra[1];
-                }
-                else if(placement == 6){
-                    julMoney += extra[1];
-                }
-                else if(placement == 5){
-                    augMoney += extra[1];
-                }
-                else if(placement == 4){
-                    sepMoney += extra[1];
-                }
-                else if(placement == 3){
-                octMoney += extra[1]; 
-                }
-                else if(placement == 2){
-                    novMoney += extra[1];
-                }
-                else if(placement == 1){
-                    decMoney = extra[1];
-                }
-                else;
-                
-                placement--;
             }
         }
+
+
+
+
+
 
         janMoney = this.displayMyMoney(jan);
         febMoney += this.displayMyMoney(feb);
@@ -356,17 +376,61 @@ export class IncomePg extends React.Component {
 
         var catg1 = "Salary";
         var catg2 = "Income from self employment";
-        var catg3 = "Social Welfare payments";    
+        var catg3 = "Social Welfare payments";
         var catg4 = "Income outside EU";
         var catg5 = "Other";
 
-        var cat1Money, cat2Money, cat3Money, cat4Money, cat5Money; 
+        var arrayLenght = this.state.incomes.length;
+        var cat1Money = 0, cat2Money = 0, cat3Money = 0, cat4Money = 0, cat5Money = 0, extra, total;
+        var placed = 0;
 
-        cat1Money = this.displayincomeDetails(catg1);
-        cat2Money = this.displayincomeDetails(catg2);
-        cat3Money = this.displayincomeDetails(catg3);
-        cat4Money = this.displayincomeDetails(catg4);
-        cat5Money = this.displayincomeDetails(catg5);
+        if (arrayLenght != 0) {
+            for (let i = 0; i < arrayLenght; i++) {
+
+                if (this.state.incomes[i].reccur.localeCompare('yes') == 0) {
+                    //total = ((extra[0] - 1) * extra[1]);
+
+                    if (this.state.incomes[i].title.localeCompare(catg1) == 0) {
+                        extra = this.recurringFunc(i);
+                        total = ((extra[0] - 1) * extra[1]);
+                        cat1Money += total;
+                    }
+                    else if (this.state.incomes[i].title.localeCompare(catg2) ==0) {
+                        extra = this.recurringFunc(i);
+                        total = ((extra[0] - 1) * extra[1]);
+                        cat2Money += total;
+                        
+                    }
+                    else if (this.state.incomes[i].title.localeCompare(catg3) == 0) {
+                        extra = this.recurringFunc(i);
+                        total = ((extra[0] - 1) * extra[1]);
+                        cat3Money += total;
+                    }
+                    else if (this.state.incomes[i].title.localeCompare(catg4) ==0) {
+                        extra = this.recurringFunc(i);
+                        total = ((extra[0] - 1) * extra[1]);
+                        cat4Money += total;
+                        console.log("Cat4Money: " + cat4Money);
+                    }
+                    else if (this.state.incomes[i].title.localeCompare(catg5) ==0) {
+                        extra = this.recurringFunc(i);
+                        total = ((extra[0] - 1) * extra[1]);
+                        cat5Money += total;
+                    }
+
+                }
+
+
+
+            }
+        }
+
+
+        cat1Money += this.displayincomeDetails(catg1);
+        cat2Money += this.displayincomeDetails(catg2);
+        cat3Money += this.displayincomeDetails(catg3);
+        cat4Money += this.displayincomeDetails(catg4);
+        cat5Money += this.displayincomeDetails(catg5);
 
 
         var dataPolar = {
@@ -383,92 +447,98 @@ export class IncomePg extends React.Component {
                     label: "My Earnings" // for legend
                 }
             ],
-            labels: [catg1,catg2, catg3, catg4, catg5 ]
+            labels: [catg1, catg2, catg3, catg4, catg5]
         }
 
         return dataPolar;
     }
 
-    reccurMonths = (mydate, repeatType) =>{
+    reccurMonths = (mydate, repeatType) => {
 
-        if (repeatType == 1){
-            
+        if (repeatType == 1) {
+
             var date = new Date(mydate);
             var date2 = new Date('12/31/2021');
             var diffTime = Math.abs(date2 - date);
-            var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-            
-            return Math.floor(diffDays/30) + 1;
+            var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            return Math.floor(diffDays / 30) + 1;
 
         }
-        else if(repeatType == 2){
-           // console.log(mydate);
+        else if (repeatType == 2) {
+            // console.log(mydate);
             var d = new Date(mydate);
 
             //console.log("Month "+d.getMonth()+1);
 
-            return 12 - Number(d.getMonth()) ;
+            return 12 - Number(d.getMonth());
 
         }
-        else if(repeatType == 3){
+        else if (repeatType == 3) {
 
             var date = new Date(mydate);
             var date2 = new Date('2021-12-31');
 
             var diffTime = Math.abs(date2 - date);
-            var diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)); 
+            var diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
 
-            var weeks = Math.floor((diffDays + date.getDay()+1) / 7) ; 
-            
-            var months = Math.floor(weeks/4);
-            
+            var weeks = Math.floor((diffDays + date.getDay() + 1) / 7);
+
+            var months = Math.floor(weeks / 4);
+
             return months;
 
         }
     }
 
-    recurringFunc = () => {
+    //returns num: amount of month, money: the income inputted, place: the place of the recurr
+    recurringFunc = (place) => {
         //use for loops
         var arrayLenght = this.state.incomes.length;
         var recurrDaily = "Daily";
         var recurrMonthly = "Monthly";
         var recurrWeekly = "Weekly";
+        //place += 1;
 
-        for(let i = 0; i < arrayLenght; i++){
+
+        for (let i = place; i < arrayLenght; i++) {
             //compare this.state.incomes[i].recurr
             //do if state if recurr equals daily/weekly/etc
-            if (this.state.incomes[i].annual.localeCompare(recurrDaily) ==0){
+
+            if (this.state.incomes[i].annual.localeCompare(recurrDaily) == 0) {
                 var num = this.reccurMonths(this.state.incomes[i].date, 1);
-                
-                var toDoArray = [num, this.state.incomes[i].money];
-                console.log("Daily month" +num);
+
+                var toDoArray = [num, this.state.incomes[i].money, i];
+                console.log("Daily month" + num);
                 return toDoArray;
-                
+
             }
-            else if (this.state.incomes[i].annual.localeCompare(recurrMonthly) ==0){
+            else if (this.state.incomes[i].annual.localeCompare(recurrMonthly) == 0) {
                 var num = this.reccurMonths(this.state.incomes[i].date, 2);
 
-                var toDoArray = [num, this.state.incomes[i].money];
-                console.log("Number of months"+num);
+                var toDoArray = [num, this.state.incomes[i].money, i];
+                console.log("Number of months" + num);
                 return toDoArray;
-                
+
             }
-            else if (this.state.incomes[i].annual.localeCompare(recurrWeekly) == 0){
+            else if (this.state.incomes[i].annual.localeCompare(recurrWeekly) == 0) {
                 var num = this.reccurMonths(this.state.incomes[i].date, 3);
 
-                var toDoArray = [num, this.state.incomes[i].money];
-                console.log("Week to month " +num);
+                var toDoArray = [num, this.state.incomes[i].money, i];
+                console.log("Week to month " + num);
                 return toDoArray;
-                
+
             }
-            else{
+            else {
                 console.log("Yealy ting boyz");
             }
-            
+
         }
 
     }
+
+
 
 
     //allows html in JAVASCRIPT
@@ -544,7 +614,7 @@ export class IncomePg extends React.Component {
                 </form>
 
                 <MDBContainer>
-                    
+
                     <Pie data={this.updateDetailsData} options={{ responsive: true }} />
                 </MDBContainer>
 
