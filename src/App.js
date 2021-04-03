@@ -20,11 +20,11 @@ class App extends Component {
             <Navbar.Brand href="#home">Money Management System</Navbar.Brand>
             <Nav className="mr-auto">
               <Nav.Link href="/">Home</Nav.Link>
-              <Nav.Link href="/income">Enter Income</Nav.Link>
-              <Nav.Link href="/expense">Enter Expenses</Nav.Link>
+              <Nav.Link href="/income">Incomes</Nav.Link>
+              <Nav.Link href="/expense">Expenses</Nav.Link>
               <Nav.Link href="/goal">Goals</Nav.Link>
-              <Nav.Link href="/incomeread">Income List</Nav.Link>
-              <Nav.Link href="/expenseread">Expense List</Nav.Link>
+              <Nav.Link href="/incomeread">Edit Income</Nav.Link>
+              <Nav.Link href="/expenseread">Edit Expense</Nav.Link>
             </Nav>
           </Navbar>
 

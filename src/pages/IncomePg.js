@@ -29,6 +29,10 @@ export class IncomePg extends React.Component {
         this.covertDate = this.covertDate.bind(this);
         this.updateData = this.updateData.bind(this);
         this.displayincomeDetails = this.displayincomeDetails.bind(this);
+        this.recurringFunc = this.recurringFunc.bind(this);
+        this.reccurMonths = this.reccurMonths.bind(this);
+        this.updateDetailsData = this.updateDetailsData.bind(this);
+        this.updateData = this.updateData.bind(this);
 
         this.stateGraph = {
             barChartOptions: {
