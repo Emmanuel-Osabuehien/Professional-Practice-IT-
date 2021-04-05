@@ -1,0 +1,158 @@
+import React from 'react';
+import axios from 'axios';
+
+//This is my edit class where I edit the properties inside a database to my read.js file
+export class EditIncome extends React.Component {
+
+    constructor() {
+        super();
+
+        this.onSubmit = this.onSubmit.bind(this);
+        this.onChangeTitle = this.onChangeTitle.bind(this);
+        this.onChangeMoney = this.onChangeMoney.bind(this);
+        this.onChangeDate = this.onChangeDate.bind(this);
+        this.onChangeReccur = this.onChangeReccur.bind(this);
+        this.onChangeAnnual = this.onChangeAnnual.bind(this);
+
+        //This is my 5 properties that will be added read.js file after the edit is complete
+        this.state = {
+            Title: '',
+            Money: '',
+            Date: '',
+            Reccur: '',
+            Annual: ''
+        }
+    }
+
+    //My componentDidMount method which will be triggered after state is set
+    componentDidMount() {
+        console.log(this.props.match.params.id);
+
+        axios.get('http://localhost:4000/incomes/' + this.props.match.params.id)
+            .then(response => {
+                //If correct the edit is fixed
+                this.setState({
+                    _id: response.data._id,
+                    Title: response.data.title,
+                    Money: response.data.money,
+                    Date: response.data.date,
+                    Reccur: response.data.reccur,
+                    Annual: response.data.annual
+                })
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+    onChangeTitle(e) {
+        this.setState({
+            Title: e.target.value
+        });
+    }
+
+    onChangeMoney(e) {
+        this.setState({
+            Money: e.target.value
+        });
+    }
+
+    onChangeYear(e) {
+        this.setState({
+            Date: e.target.value
+        });
+    }
+
+    onChangePoster(e) {
+        this.setState({
+            Reccur: e.target.value
+        });
+    }
+
+    onChangePrice(e) {
+        this.setState({
+            Annual: e.target.value
+        });
+    }
+
+    onSubmit(e) {
+        e.preventDefault();
+         alert("Info is now: " + this.state.Title + " " +
+            this.state.Money + " "
+            + this.state.Date + " " +
+            this.state.Reccur + " " + this.state.Annual);
+
+        //addGame function
+        const editIncome = {
+            title: this.state.Title,
+            moeny: this.state.Money,
+            date: this.state.Date,
+            reccur: this.state.Reccur,
+            annual: this.state.Annual,
+            _id: this.state._id
+        }
+
+        axios.put('http://localhost:4000/thegame/' + this.state._id, editIncome)
+            .then(response => {
+                console.log(response.data)
+            })
+            .catch();
+    }
+    //Here is where i render in my text boxes where you can add the data into each box
+    render() {
+        return (
+            <div className='App'>
+                <form onSubmit={this.onSubmit}>
+                    <div className="form-group">
+                    <label>Income Details: </label>
+                        <select className="form-control" value={this.state.Title}
+                            onChange={this.onChangeTitle}>
+                            <option>Salary</option>
+                            <option>Income from self employment</option>
+                            <option>Social Welfare payments</option>
+                            <option>Income outside EU</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div className="form-group">
+                        <label>Income Amount: </label>
+                        <input type='text'
+                            className='form-control'
+                            value={this.state.Money}
+                            onChange={this.onChangeMoney}></input>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="example-date-input" className="col-2 col-form-label">Date</label>
+
+                        <input className="form-control" type="date" min="2021-01-01" max="2021-12-31" value="2021-08-19"
+                            value={this.state.Date}
+                            onChange={this.onChangeDate}></input>
+                    </div>
+
+                    <div className="form-group">
+                        <label>Is it a recurring income: </label>
+                        <select className="form-control" id="recurringSelection" onClick={this.componentDidMount}
+                            value={this.state.Reccur}
+                            onChange={this.onChangeReccur}>
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+
+                        </select>
+                    </div>
+
+                    <div className="form-group" id="inputCommentsBrand">
+                        <label>Recurring: </label>
+                        <select className="form-control"
+                            value={this.state.Annual}
+                            onChange={this.onChangeAnnual}>
+                            <option>Yearly</option>
+                            <option>Monthly</option>
+                            <option>Weekly</option>
+                            <option>Daily</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+        );
+    }
+}
