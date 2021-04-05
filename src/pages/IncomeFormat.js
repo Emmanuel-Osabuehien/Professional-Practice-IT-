@@ -19,7 +19,7 @@ export class IncomeFormat extends React.Component {
                     <Card.Header>{this.props.income.date}</Card.Header>
                     <Card.Header>{this.props.income.reccur}</Card.Header>
                     <Card.Header>{this.props.income.annual}</Card.Header>
-                    <Link to={"/EditIncome/" + this.props.game._id} className="btn btn-primary" style={{ background: 'blue' }}>Click to Edit</Link>
+                    <Link to={"/EditIncome/" + this.props.income._id} className="btn btn-primary" style={{ background: 'blue' }}>Click to Edit</Link>
                 </Card>
 
 

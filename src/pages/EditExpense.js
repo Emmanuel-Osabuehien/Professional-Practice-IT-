@@ -30,11 +30,11 @@ export class EditExpense extends React.Component {
             .then(response => {
                 this.setState({
                     _id: response.data._id,
-                    title: response.data.title,
-                    money: response.data.money,
-                    date: response.data.date,
-                    reccur: response.data.reccur,
-                    annual: response.data.annual,
+                    Title: response.data.title,
+                    Money: response.data.money,
+                    Date: response.data.date,
+                    Reccur: response.data.reccur,
+                    Annual: response.data.annual
                     })
             })
             .catch((error) => {

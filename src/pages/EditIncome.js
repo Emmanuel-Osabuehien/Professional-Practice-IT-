@@ -24,13 +24,11 @@ export class EditIncome extends React.Component {
         }
     }
 
-    //My componentDidMount method which will be triggered after state is set
-    componentDidMount() {
+   componentDidMount() {
         console.log(this.props.match.params.id);
 
         axios.get('http://localhost:4000/incomes/' + this.props.match.params.id)
             .then(response => {
-                //If correct the edit is fixed
                 this.setState({
                     _id: response.data._id,
                     Title: response.data.title,
@@ -57,19 +55,19 @@ export class EditIncome extends React.Component {
         });
     }
 
-    onChangeYear(e) {
+    onChangeDate(e) {
         this.setState({
             Date: e.target.value
         });
     }
 
-    onChangePoster(e) {
+    onChangeReccur(e) {
         this.setState({
             Reccur: e.target.value
         });
     }
 
-    onChangePrice(e) {
+    onChangeAnnual(e) {
         this.setState({
             Annual: e.target.value
         });
@@ -92,7 +90,7 @@ export class EditIncome extends React.Component {
             _id: this.state._id
         }
 
-        axios.put('http://localhost:4000/thegame/' + this.state._id, editIncome)
+        axios.put('http://localhost:4000/incomes/' + this.state._id, editIncome)
             .then(response => {
                 console.log(response.data)
             })
