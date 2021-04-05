@@ -147,9 +147,10 @@ export class EditExpense extends React.Component {
                             <option>Daily</option>
                         </select>
                     </div>
+                  
                     <div className="form-group">
                         <input type='submit'
-                            value='Edit Details'
+                            value='Edit Info'
                             className='btn btn-primary'></input>
                     </div>
                 </form>
