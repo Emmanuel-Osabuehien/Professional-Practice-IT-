@@ -63,6 +63,17 @@ app.get('/incomes/:id', (req, res) => {
     })
 })
 
+app.put('/incomes/:id', (req, res) => {
+    console.log("Updated: " + req.params.id);
+    console.log(req.body);
+
+    incomeModel.findByIdAndUpdate(req.params.id, req.body, { new: true },
+        (err, data) => {
+            res.send(data);
+        })
+
+})
+
 app.post('/incomes', (req, res) => {
     console.log("Your Input has been added");
     console.log(req.body.title);
@@ -110,6 +121,18 @@ app.post('/expenses', (req, res) => {
         reccur: req.body.reccur,
         annual: req.body.annual
     })
+})
+
+
+app.put('/expenses/:id', (req, res) => {
+    console.log("Updated: " + req.params.id);
+    console.log(req.body);
+
+    expenseModel.findByIdAndUpdate(req.params.id, req.body, { new: true },
+        (err, data) => {
+            res.send(data);
+        })
+
 })
 
 //Listening on port4000

@@ -16,6 +16,7 @@ export class EditIncome extends React.Component {
 
         //This is my 5 properties that will be added read.js file after the edit is complete
         this.state = {
+            _id: '',
             Title: '',
             Money: '',
             Date: '',
@@ -93,6 +94,7 @@ export class EditIncome extends React.Component {
         axios.put('http://localhost:4000/incomes/' + this.state._id, editIncome)
             .then(response => {
                 console.log(response.data)
+                
             })
             .catch();
     }

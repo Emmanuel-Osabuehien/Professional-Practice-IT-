@@ -2,8 +2,7 @@ import axios from 'axios';
 import React from 'react';
 import { MDBContainer } from "mdbreact";
 import { Bar, Pie } from "react-chartjs-2";
-import { IncomeList } from "./IncomeList";
-import { IncomeRead } from "./IncomeRead";
+
 
 
 
@@ -625,5 +624,8 @@ export class IncomePg extends React.Component {
             </div>
         );
     }
+
+    
 }
+
 
