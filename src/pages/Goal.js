@@ -16,8 +16,10 @@ export class Goal extends React.Component {
         this.updateData = this.updateData.bind(this);
         this.reccurMonths = this.reccurMonths.bind(this);
         this.recurringFunc = this.recurringFunc.bind(this);
-        this.ReloadIncomeData = this.ReloadIncomeData.bind(this);
-        
+        this.ReloadData = this.ReloadData.bind(this);
+        this.updateExpData = this.updateExpData.bind(this);
+        this.uploadGraph = this.uploadGraph.bind(this);
+
 
         this.stateGraph = {
             barChartOptions: {
@@ -57,7 +59,7 @@ export class Goal extends React.Component {
     }
 
     componentDidMount() {
-        this.ReloadIncomeData();
+        this.ReloadData();
 
     }
 
@@ -75,15 +77,25 @@ export class Goal extends React.Component {
 
     }
 
-    ReloadIncomeData() {
+    ReloadData() {
         axios.get('http://localhost:4000/incomes')
             .then((response) => {
                 this.setState({ incomes: response.data })
-                //this.displayMyMoney();
-                console.log("In here");
+
+
             })
             .catch((error) => {
                 console.log(error)
+            });
+
+        axios.get('http://localhost:4000/expenses')
+            .then((response) => {
+                this.setState({ expenses: response.data })
+
+            })
+            .catch((error) => {
+                console.log(error)
+
             });
     }
 
@@ -109,8 +121,33 @@ export class Goal extends React.Component {
 
     }
 
+    displayExpMoney(month) {
+
+        var arrayLenght = this.state.expenses.length;
+        var myDateMonth;
+
+        var monthMoney = 0;
+
+        for (let i = 0; i < arrayLenght; i++) {
+            myDateMonth = this.covertDate(this.state.expenses[i].date);
+
+
+            //console.log(myDateMonth);
+
+            if (JSON.stringify(myDateMonth) == JSON.stringify(month)) {
+
+                monthMoney += this.state.expenses[i].money;
+                console.log(monthMoney);
+
+            }
+        }
+        return monthMoney;
+
+    }
+
     //Data going inside bar graph
-    updateData() {
+    //Retrun 0:Array for the graph, >0: Income data in array
+    updateData(num) {
 
         var jan = ['0', '1'];
         var feb = ['0', '2'];
@@ -132,6 +169,8 @@ export class Goal extends React.Component {
         var place = 0;
         var arrayLenght = this.state.incomes.length;
         var extra;
+
+        var expData = this.updateExpData();
         //console.log("Loops: "+arrayLenght);
         //extra = [1, 0];
 
@@ -211,13 +250,24 @@ export class Goal extends React.Component {
         novMoney += this.displayMyMoney(nov);
         decMoney += this.displayMyMoney(dec);
 
+        var incomeData = [janMoney, febMoney, marMoneey, aprMoney, mayMoney, junMoney, julMoney, augMoney, sepMoney, octMoney, novMoney, decMoney];
+        var data = [(janMoney - expData[0]), (febMoney - expData[1]), (marMoneey - expData[2]), (aprMoney - expData[3]), (mayMoney - expData[4]), (junMoney - expData[5]), (julMoney - expData[6]), (augMoney - expData[7]), (sepMoney - expData[8]), (octMoney - expData[9]), (novMoney - expData[10]), (decMoney - expData[11])];
+                   
+        if (num == 0){
+            return data;
+        }
+        else
+            return incomeData;
+    }
+
+    uploadGraph(dataForGraph){
 
         var data = {
             labels: ["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"],
             datasets: [
                 {
                     label: "Income",
-                    data: [janMoney, febMoney, marMoneey, aprMoney, mayMoney, junMoney, julMoney, augMoney, sepMoney, octMoney, novMoney, decMoney],
+                    data: [dataForGraph[0],dataForGraph[1], dataForGraph[2], dataForGraph[3], dataForGraph[4], dataForGraph[5], dataForGraph[6], dataForGraph[7], dataForGraph[8], dataForGraph[9], dataForGraph[10], dataForGraph[11]],
                     backgroundColor: [
                         "rgba(255, 134,159,0.4)",
                         "rgba(98,  182, 239,0.4)",
@@ -251,6 +301,115 @@ export class Goal extends React.Component {
                 }
             ]
         }
+
+        return data;
+    }
+
+    updateExpData() {
+
+        var jan = ['0', '1'];
+        var feb = ['0', '2'];
+        var mar = ['0', '3'];
+        var apl = ['0', '4'];
+        var may = ['0', '5'];
+        var jun = ['0', '6'];
+        var jul = ['0', '7'];
+        var aug = ['0', '8'];
+        var sept = ['0', '9'];
+        var oct = ['1', '0'];
+        var nov = ['1', '1'];
+        var dec = ['1', '2'];
+
+        //Intiallizing variables
+        var janMoney = 0, febMoney = 0, marMoneey = 0, aprMoney = 0, mayMoney = 0, junMoney = 0, julMoney = 0,
+            augMoney = 0, sepMoney = 0, octMoney = 0, novMoney = 0, decMoney = 0;//Moths that are going to graph
+        var placement
+        var place = 0;
+        var arrayLenght = this.state.expenses.length;
+        var extra;
+        //console.log("Loops: "+arrayLenght);
+        //extra = [1, 0];
+
+        //Adding the recurring balance to each month
+        if (arrayLenght != 0) {
+
+
+            for (let i = 0; i < arrayLenght; i++) {//Loops through the each row in database
+
+                //Returns back array [0] = months(1-12), array[1] = money that is recurring, array[2] = placement of month we aleady added bal to
+                extra = this.recurringExpFunc(place);
+                if (extra != null) {
+                    placement = extra[0] - 1;
+
+                    while (placement > 0) {
+
+                        if (placement == 11) {
+                            febMoney += extra[1];
+                        }
+                        else if (placement == 10) {
+                            marMoneey += extra[1];
+                        }
+                        else if (placement == 9) {
+                            aprMoney += extra[1];
+                        }
+                        else if (placement == 8) {
+                            mayMoney += extra[1];
+
+                        }
+                        else if (placement == 7) {
+                            junMoney += extra[1];
+                        }
+                        else if (placement == 6) {
+                            julMoney += extra[1];
+                        }
+                        else if (placement == 5) {
+                            augMoney += extra[1];
+                        }
+                        else if (placement == 4) {
+                            sepMoney += extra[1];
+                        }
+                        else if (placement == 3) {
+                            octMoney += extra[1];
+                        }
+                        else if (placement == 2) {
+                            novMoney += extra[1];
+                        }
+                        else if (placement == 1) {
+                            decMoney += extra[1];
+                        }
+                        else;
+
+                        placement--;
+                    }
+
+                    console.log("Placement: " + place);
+                    place = extra[2] + 1;
+                }
+            }
+        }
+
+
+
+
+
+
+        janMoney = this.displayExpMoney(jan);
+        febMoney += this.displayExpMoney(feb);
+        marMoneey += this.displayExpMoney(mar);
+        aprMoney += this.displayExpMoney(apl);
+        mayMoney += this.displayExpMoney(may);
+        junMoney += this.displayExpMoney(jun);
+        julMoney += this.displayExpMoney(jul);
+        augMoney += this.displayExpMoney(aug);
+        sepMoney += this.displayExpMoney(sept);
+        octMoney += this.displayExpMoney(oct);
+        novMoney += this.displayExpMoney(nov);
+        decMoney += this.displayExpMoney(dec);
+
+
+        var data = [janMoney, febMoney, marMoneey, aprMoney, mayMoney, junMoney, julMoney, augMoney, sepMoney, octMoney, novMoney, decMoney]
+
+
         return data;
     }
 
@@ -340,6 +499,73 @@ export class Goal extends React.Component {
 
     }
 
+    recurringExpFunc(place) {
+        //use for loops
+        var arrayLenght = this.state.expenses.length;
+        var recurrDaily = "Daily";
+        var recurrMonthly = "Monthly";
+        var recurrWeekly = "Weekly";
+        //place += 1;
+
+
+        for (let i = place; i < arrayLenght; i++) {
+            //compare this.state.incomes[i].recurr
+            //do if state if recurr equals daily/weekly/etc
+
+            if (this.state.expenses[i].annual.localeCompare(recurrDaily) == 0) {
+                var num = this.reccurMonths(this.state.expenses[i].date, 1);
+
+                var toDoArray = [num, this.state.expenses[i].money, i];
+                console.log("Daily month" + num);
+                return toDoArray;
+
+            }
+            else if (this.state.expenses[i].annual.localeCompare(recurrMonthly) == 0) {
+                var num = this.reccurMonths(this.state.expenses[i].date, 2);
+
+                var toDoArray = [num, this.state.expenses[i].money, i];
+                console.log("Number of months" + num);
+                return toDoArray;
+
+            }
+            else if (this.state.expenses[i].annual.localeCompare(recurrWeekly) == 0) {
+                var num = this.reccurMonths(this.state.expenses[i].date, 3);
+
+                var toDoArray = [num, this.state.expenses[i].money, i];
+                console.log("Week to month " + num);
+                return toDoArray;
+
+            }
+            else {
+                console.log("Yealy ting boyz");
+            }
+
+        }
+
+    }
+
+    profOrExpMessage() {
+
+        var data = this.updateData(1);
+
+        for (let i = 0; i <= data.length; i++) {
+            if (data[i] > 0) {
+                console.log("Profit for dayssss");
+            }
+            else
+                console.log("Sorry bud you in a loss - maybe a new job???");
+        }//endFor
+
+
+        // if (document.getElementById("recurringSelection").value == "no") {
+        //     document.getElementById("inputCommentsBrand").style.display = "none";
+        // }
+        // else {
+        //     document.getElementById("inputCommentsBrand").style.display = "block";
+        // }
+
+    }
+
     //allows html in JAVASCRIPT
     render() {
 
@@ -347,12 +573,14 @@ export class Goal extends React.Component {
         return (
             <div>
 
-<MDBContainer>
-                    <h3 className="mt-5">Income Chart</h3>
-                    <Bar data={this.updateData} options={this.stateGraph.barChartOptions} />
+                <MDBContainer>
+                    <h3 className="mt-5">Profits/Loss</h3>
+                    <Bar data={this.uploadGraph(this.updateData(0))} options={this.stateGraph.barChartOptions} />
                 </MDBContainer>
 
-                <a>Inside PG for Goal</a><br />
+
+                <button onClick={this.profOrExpMessage}>Priint Message on Console</button>
+
                 <a href="/">return to main</a>
             </div>
 
