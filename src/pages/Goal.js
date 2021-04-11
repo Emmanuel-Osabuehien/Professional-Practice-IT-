@@ -2,6 +2,8 @@ import React from 'react';
 import axios from 'axios';
 import { Bar } from "react-chartjs-2";
 import { MDBContainer } from "mdbreact";
+import Button from 'react-bootstrap/Button'
+
 
 
 
@@ -19,7 +21,11 @@ export class Goal extends React.Component {
         this.ReloadData = this.ReloadData.bind(this);
         this.updateExpData = this.updateExpData.bind(this);
         this.uploadGraph = this.uploadGraph.bind(this);
-
+        this.profOrExpMessage = this.profOrExpMessage.bind(this);
+        this.minTodayDate = this.minTodayDate.bind(this);
+        this.goalValueRetrived = this.goalValueRetrived.bind(this);
+        this.hiddenElement = this.hiddenElement.bind(this);
+        this.myDateMonth = this.myDateMonth.bind(this);
 
         this.stateGraph = {
             barChartOptions: {
@@ -252,22 +258,23 @@ export class Goal extends React.Component {
 
         var incomeData = [janMoney, febMoney, marMoneey, aprMoney, mayMoney, junMoney, julMoney, augMoney, sepMoney, octMoney, novMoney, decMoney];
         var data = [(janMoney - expData[0]), (febMoney - expData[1]), (marMoneey - expData[2]), (aprMoney - expData[3]), (mayMoney - expData[4]), (junMoney - expData[5]), (julMoney - expData[6]), (augMoney - expData[7]), (sepMoney - expData[8]), (octMoney - expData[9]), (novMoney - expData[10]), (decMoney - expData[11])];
-                   
-        if (num == 0){
+
+        if (num == 0) {
             return data;
         }
-        else
+        else if (num == 1) {
             return incomeData;
+        }
     }
 
-    uploadGraph(dataForGraph){
+    uploadGraph(dataForGraph) {
 
         var data = {
             labels: ["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"],
             datasets: [
                 {
                     label: "Income",
-                    data: [dataForGraph[0],dataForGraph[1], dataForGraph[2], dataForGraph[3], dataForGraph[4], dataForGraph[5], dataForGraph[6], dataForGraph[7], dataForGraph[8], dataForGraph[9], dataForGraph[10], dataForGraph[11]],
+                    data: [dataForGraph[0], dataForGraph[1], dataForGraph[2], dataForGraph[3], dataForGraph[4], dataForGraph[5], dataForGraph[6], dataForGraph[7], dataForGraph[8], dataForGraph[9], dataForGraph[10], dataForGraph[11]],
                     backgroundColor: [
                         "rgba(255, 134,159,0.4)",
                         "rgba(98,  182, 239,0.4)",
@@ -546,23 +553,76 @@ export class Goal extends React.Component {
 
     profOrExpMessage() {
 
-        var data = this.updateData(1);
+        var Goal = this.goalValueRetrived();
+        this.hiddenElement();
 
-        for (let i = 0; i <= data.length; i++) {
-            if (data[i] > 0) {
-                console.log("Profit for dayssss");
+
+        var month = this.myDateMonth(Goal[1]);
+        var totByMonth = 0;
+
+        try {
+            //Array for prof/loss each month
+            //0-11 rep each month
+            var data = this.updateData(0);
+            
+            for(var i = 0; i < month; i++ ){
+                totByMonth += data[i];
+            }
+            
+            if(totByMonth >= Goal[0]){
+
+                document.getElementById("goalMessage").innerHTML = "Nice keep up with your money flow and you can reach your goal of " +Goal[0];
             }
             else
-                console.log("Sorry bud you in a loss - maybe a new job???");
-        }//endFor
+                document.getElementById("goalMessage").innerHTML = "Sorry man, with current money flow you can't reach " +Goal[0];
+
+        } catch (error) {
+            console.log("Undefined noooooo- only occur 1st time");
+        }
+
+    }
+
+    myDateMonth(month){
+        
+        var monthInArray = this.covertDate(month);
+
+        var monthString = "";
+        for(var i = 0; i < month.length; i++){
+            monthString += monthInArray[i];
+        }
+        
+        var monthInNum = parseInt(monthString);
+        
+        return monthInNum;
+    }
 
 
-        // if (document.getElementById("recurringSelection").value == "no") {
-        //     document.getElementById("inputCommentsBrand").style.display = "none";
-        // }
-        // else {
-        //     document.getElementById("inputCommentsBrand").style.display = "block";
-        // }
+
+    minTodayDate() {
+        var today = new Date();
+
+
+        //if statement to return in dd/mm/yyyy format
+        if (today.getMonth() >= 9) {
+
+            return today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+        }
+        else
+            return today.getFullYear() + "-0" + (today.getMonth() + 1) + "-" + today.getDate();
+    }
+
+    goalValueRetrived() {
+        var myGoal = document.getElementById("myGoal").value;
+        var goalDate= document.getElementById("goalDate").value;
+
+        
+
+        return [myGoal, goalDate];
+    }
+
+    hiddenElement() {
+
+        document.getElementById("hideDivOnclick").style.display = "none";
 
     }
 
@@ -572,14 +632,35 @@ export class Goal extends React.Component {
         //return html
         return (
             <div>
-
+                <h3 align="center">Whats your money goal for 2021 </h3>
                 <MDBContainer>
                     <h3 className="mt-5">Profits/Loss</h3>
                     <Bar data={this.uploadGraph(this.updateData(0))} options={this.stateGraph.barChartOptions} />
                 </MDBContainer>
 
+                <div id="hideDivOnclick">
 
-                <button onClick={this.profOrExpMessage}>Priint Message on Console</button>
+                    
+
+                    Saving Goal: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="Number" id="myGoal"></input>
+
+                    <br />
+                    <a>Date you wanna reach goal: </a>
+                    <input type="date" id="goalDate" min={this.minTodayDate()} max="2021-12-31" ></input>
+
+                    <br />
+                    <br />
+
+
+
+                    <Button variant="primary" size="lg" block onClick={this.profOrExpMessage}>
+                        Block level button
+                </Button>
+                </div>
+
+                <h5 id="goalMessage"></h5>
+
 
                 <a href="/">return to main</a>
             </div>
