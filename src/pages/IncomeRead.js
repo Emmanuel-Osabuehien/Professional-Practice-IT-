@@ -50,6 +50,8 @@ export class IncomeRead extends React.Component {
             <div>
 
                 <IncomeList incomes={this.state.incomes} ReloadData={this.ReloadData}></IncomeList>
+
+                <a href="/">Home</a>
             </div>
         );
     }
