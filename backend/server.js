@@ -145,11 +145,11 @@ app.put('/expenses/:id', (req, res) => {
 
 app.delete('/expenses/:id', (req, res) => {
     console.log("Expense: " + req.params.id + " was deleted");
+    console.log(err.message);
 
     expenseModel.findByIdAndDelete(req.params.id, (err, data) => {
         res.send(data);
-        console.log("Expense: " + req.params.id + " was deleted");
-    })
+        })
 })
 
 //Listening on port4000
