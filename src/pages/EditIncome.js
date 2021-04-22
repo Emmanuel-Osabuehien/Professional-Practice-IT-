@@ -157,6 +157,7 @@ export class EditIncome extends React.Component {
                             className='btn btn-primary'></input>
                     </div>
                 </form>
+                <a href="/">Home</a>
             </div>
         );
     }

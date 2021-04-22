@@ -32,7 +32,10 @@ export class ExpenseRead extends React.Component {
             <div>
                
                 <ExpenseList expenses={this.state.expenses} ReloadData={this.ReloadData}></ExpenseList>
+
+                <a href="/">Home</a>
             </div>
+            
         );
     }
 }

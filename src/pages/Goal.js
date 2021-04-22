@@ -661,7 +661,7 @@ export class Goal extends React.Component {
                 <h5 id="goalMessage"></h5>
 
 
-                <a href="/">return to main</a>
+                <a href="/">Home</a>
             </div>
 
 

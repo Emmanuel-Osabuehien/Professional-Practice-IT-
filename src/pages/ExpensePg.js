@@ -635,6 +635,8 @@ export class ExpensePg extends React.Component {
                     <Pie data={this.updateDetailsData} options={{ responsive: true }} />
                 </MDBContainer>
 
+                <a href="/">Home</a>
+
             </div>
         );
     }

@@ -91,6 +91,14 @@ app.post('/incomes', (req, res) => {
     })
 })
 
+app.delete('/incomes/:id', (req, res) => {
+    console.log("Income: " + req.params.id + " was deleted");
+
+    incomeModel.findByIdAndDelete(req.params.id, (err, data) => {
+        res.send(data);
+    })
+})
+
 app.get('/expenses', (req, res) => {
 
     expenseModel.find((err, data) => {
@@ -133,6 +141,15 @@ app.put('/expenses/:id', (req, res) => {
             res.send(data);
         })
 
+})
+
+app.delete('/expenses/:id', (req, res) => {
+    console.log("Expense: " + req.params.id + " was deleted");
+    console.log(err.message);
+
+    expenseModel.findByIdAndDelete(req.params.id, (err, data) => {
+        res.send(data);
+        })
 })
 
 //Listening on port4000
