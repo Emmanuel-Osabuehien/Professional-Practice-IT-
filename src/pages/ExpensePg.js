@@ -177,11 +177,7 @@ export class ExpensePg extends React.Component {
             reccur: this.state.Reccur,
             annual: this.state.Annual
         }
-        alert(inputExpense.title + " Info has been added");
-        alert(inputExpense.money + " Info has been added");
-        alert(inputExpense.date + " Info has been added");
-        alert(inputExpense.reccur + " Info has been added");
-        alert(inputExpense.annual + " Info has been added");
+
         axios.post('http://localhost:4000/expenses', inputExpense)
             .then((res) => {
 
@@ -358,7 +354,7 @@ export class ExpensePg extends React.Component {
             labels: ["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"],
             datasets: [
                 {
-                    label: "Income",
+                    label: "Expense",
                     data: [janMoney, febMoney, marMoneey, aprMoney, mayMoney, junMoney, julMoney, augMoney, sepMoney, octMoney, novMoney, decMoney],
                     backgroundColor: [
                         "rgba(255, 134,159,0.4)",

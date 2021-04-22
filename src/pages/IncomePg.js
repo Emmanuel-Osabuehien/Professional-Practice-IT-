@@ -145,11 +145,7 @@ export class IncomePg extends React.Component {
             reccur: this.state.Reccur,
             annual: this.state.Annual
         }
-        alert(inputIncome.title + " Info has been added");
-        alert(inputIncome.money + " Info has been added");
-        alert(inputIncome.date + " Info has been added");
-        alert(inputIncome.reccur + " Info has been added");
-        alert(inputIncome.annual + " Info has been added");
+
         axios.post('http://localhost:4000/incomes', inputIncome)
             .then((res) => {
 

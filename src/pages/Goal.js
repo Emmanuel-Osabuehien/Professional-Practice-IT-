@@ -652,11 +652,10 @@ export class Goal extends React.Component {
                     <br />
                     <br />
 
+                    <button onClick={this.profOrExpMessage}>
+                        Check
+                    </button>
 
-
-                    <Button variant="primary" size="lg" block onClick={this.profOrExpMessage}>
-                        Block level button
-                </Button>
                 </div>
 
                 <h5 id="goalMessage"></h5>

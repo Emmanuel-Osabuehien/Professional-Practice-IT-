@@ -15,11 +15,15 @@
 
 .CarouselImage {
   
-  width: 910px;
+  width: 1000px;
   height: 659px;
   margin: auto;
 
 
+}
+
+.color-nav{
+  background-color: rgb(46, 179, 46);
 }
 
 .App-header {
@@ -44,4 +48,35 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+
+/* Split the screen in half */
+.split {
+  
+  width: 35%;
+  position: absolute;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+/* Control the left side */
+.left {
+  left: 0;
+}
+
+.centreImage{
+  left: 35%;
+  text-align: left;
+  
+}
+
+
+/* Control the right side */
+.right {
+  right: 0;
+}
+
+h6 {
+  text-align: center;
 }
