@@ -2,6 +2,11 @@
   text-align: center;
 }
 
+#signOut {
+  bottom: 0%;
+  position: absolute;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

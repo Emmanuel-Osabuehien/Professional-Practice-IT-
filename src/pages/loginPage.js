@@ -11,6 +11,8 @@ export class Login extends React.Component {
         this.ReloadData = this.ReloadData.bind(this);
         this.getUserDetails = this.getUserDetails.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
+        this.signOut = this.signOut.bind(this);
+
 
         this.state = {
             loginOrNot: false,
@@ -36,6 +38,33 @@ export class Login extends React.Component {
             });
     }
 
+    
+  signOut() {
+    var arrayLenght = this.state.Users.length;
+
+    for (let index = 0; index < arrayLenght; index++) {
+      if (this.state.Users[index].loginOrNot == true) {
+
+        const userLoggedIn = {
+          user: this.state.Users[index].user,
+          pWord: this.state.Users[index].pWord,
+          loginOrNot: false
+        }
+
+        axios.put('http://localhost:4000/login/' + this.state.Users[index]._id, userLoggedIn)
+          .then(response => {
+            console.log(response.data)
+            window.location.href = '/';
+
+          })
+
+      }
+
+    }
+
+
+  }
+
 
     getUserDetails() {
         var arrayLenght = this.state.Users.length;
@@ -45,11 +74,11 @@ export class Login extends React.Component {
 
         console.log(inputtedUser);
         console.log(inpputtedPword);
-        
+
 
         for (let index = 0; index < arrayLenght; index++) {
             if (this.state.Users[index].user == inputtedUser && this.state.Users[index].pWord == inpputtedPword) {
-                
+
                 //updating wheter or not user is logged in, in body
                 const userLoggedIn = {
                     user: inputtedUser,
@@ -60,11 +89,11 @@ export class Login extends React.Component {
                 axios.put('http://localhost:4000/login/' + this.state.Users[index]._id, userLoggedIn)
                     .then(response => {
                         console.log(response.data)
+                        window.location.href = '/';
 
                     })
-                    .catch();
 
-                    alert("You are logged in yeaaa")
+                alert("You are logged in yeaaa")
             }
 
             else {
@@ -76,7 +105,13 @@ export class Login extends React.Component {
         }
     }
 
-    
+    hiddenElement() {
+
+        document.getElementById("hideMeWhenSignOut").style.display = "none";
+    }
+
+
+
 
     render() {
         return (
@@ -106,8 +141,16 @@ export class Login extends React.Component {
 
                     <a>Don't have account</a><br />
                     <a href="/signUp">Click here to create a free account</a>
-                    <br />
+
+                    <div id="signOut">
+                        <button onClick={this.signOut}>Sign Out</button>
+                    </div>
                     <a href="/">Return Home</a>
+
+
+
+
+
                 </center>
             </div>
         );

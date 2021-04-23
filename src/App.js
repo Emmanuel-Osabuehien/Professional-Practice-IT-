@@ -24,6 +24,7 @@ class App extends Component {
     this.ReloadData = this.ReloadData.bind(this);
     this.componentDidMount = this.componentDidMount.bind(this);
     this.isUserLoggedIn = this.isUserLoggedIn.bind(this);
+    this.signOut = this.signOut.bind(this);
 
     this.state = {
       Users: []
@@ -51,13 +52,39 @@ class App extends Component {
     //var yesOrNo = false;
 
     for (let index = 0; index < arrayLenght; index++) {
-      if(this.state.Users[index].loginOrNot == true){
+      if (this.state.Users[index].loginOrNot == true) {
 
         document.getElementById("myUser").innerHTML = this.state.Users[index].user;
         console.log("Yes Im logged in")
       }
 
     }
+
+  }
+
+  signOut() {
+    var arrayLenght = this.state.Users.length;
+
+    for (let index = 0; index < arrayLenght; index++) {
+      if (this.state.Users[index].loginOrNot == true) {
+
+        const userLoggedIn = {
+          user: this.state.Users[index].user,
+          pWord: this.state.Users[index].pWord,
+          loginOrNot: false
+        }
+
+        axios.put('http://localhost:4000/login/' + this.state.Users[index]._id, userLoggedIn)
+          .then(response => {
+            console.log(response.data)
+            window.location.href = '/';
+
+          })
+
+      }
+
+    }
+
 
   }
 
@@ -87,7 +114,7 @@ class App extends Component {
             <Nav.Link href="/login" className="mr-sm-2" id="myUser">Login/SignUp</Nav.Link>
           </Nav>
         </Navbar>
-
+        
 
         <Switch>
           <Route path='/' component={Home} exact />
