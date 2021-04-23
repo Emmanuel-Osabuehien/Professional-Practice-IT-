@@ -33,6 +33,7 @@ var incomeSchema = new Schema({
     date: String,
     reccur: String,
     annual: String
+    //userCode: String
 })
 var expenseSchema = new Schema({
     title: String,
@@ -40,13 +41,57 @@ var expenseSchema = new Schema({
     date: String,
     reccur: String,
     annual: String
+    //userCode: String
+})
+
+var userLoginSchema = new Schema({
+    user: String, 
+    pWord: String, 
+    loginOrNot: Boolean
+    //userCode: String
 })
 
 
 var incomeModel = mongoose.model("incomes", incomeSchema)
 var expenseModel = mongoose.model("expenses", expenseSchema)
+var loginModel = mongoose.model("users", userLoginSchema)
 
 mongoose.connect('mongodb+srv://admin:ppit@cluster0.iemzw.mongodb.net/mms?retryWrites=true&w=majority', { useNewUrlParser: true });
+
+
+app.post('/signUp', (req, res) => {
+    
+    console.log(req.body.user);
+    console.log(req.body.pWord);
+   
+    //Auto generate userCODE - 
+
+    loginModel.create({
+        user: req.body.user,
+        pWord: req.body.pWord,
+        loginOrNot: false
+    })
+})
+
+app.get('/login', (req, res) => {
+
+    loginModel.find((err, data) => {
+        res.json(data);
+    })
+})
+
+
+
+app.put('/login/:id', (req, res) => {
+
+    loginModel.findByIdAndUpdate(req.params.id, req.body, { new: true },
+        (err, data) => {
+            res.send(data);
+            console.log("It works " +data)
+        }
+        )
+
+})
 
 app.get('/incomes', (req, res) => {
 

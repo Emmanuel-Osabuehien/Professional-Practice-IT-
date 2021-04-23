@@ -7,7 +7,6 @@ import { Bar, Pie } from "react-chartjs-2";
 
 
 
-
 export class IncomePg extends React.Component {
 
     constructor() {
@@ -73,6 +72,17 @@ export class IncomePg extends React.Component {
             incomes: []
         }
 
+        // this.readState = {
+        //     Title: 'Salary',
+        //     Money: ' ',
+        //     Date: ' ',
+        //     Reccur: 'No',
+        //     Annual: 'Yearly'
+
+        // }
+
+
+
 
 
     }
@@ -81,6 +91,8 @@ export class IncomePg extends React.Component {
     componentDidMount() {
         this.hiddenElement();
         this.ReloadData();
+
+
 
         //retrieve data
         /*

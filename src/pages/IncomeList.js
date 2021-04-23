@@ -35,7 +35,7 @@ export class IncomeList extends React.Component {
 
             // if (JSON.stringify(myDateMonth) == JSON.stringify(jan)) {
 
-            //     janMoney = income.money;
+            //     janMoney += income.money;
             //     return <IncomeFormat income={income} ReloadData={this.props.ReloadData}></IncomeFormat>
             // }
 
