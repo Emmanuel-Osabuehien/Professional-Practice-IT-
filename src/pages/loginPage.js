@@ -93,13 +93,13 @@ export class Login extends React.Component {
 
                     })
 
-                alert("You are logged in yeaaa")
+                //alert("You are logged in")
             }
 
             else {
+                //alert("Incorrect Username or Password")
                 console.log(this.state.Users[index].user);
                 console.log(this.state.Users[index].pWord);
-                alert("nope incorrect password")
             }
 
         }
@@ -141,11 +141,11 @@ export class Login extends React.Component {
 
                     <a>Don't have account</a><br />
                     <a href="/signUp">Click here to create a free account</a>
-
+                    <br></br>
                     <div id="signOut">
                         <button onClick={this.signOut}>Sign Out</button>
                     </div>
-                    <a href="/">Return Home</a>
+                    <a href="/">Home</a>
 
 
 

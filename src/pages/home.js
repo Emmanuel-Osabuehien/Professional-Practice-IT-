@@ -63,7 +63,7 @@ export class Home extends React.Component {
                     </div>
 
                     <center>
-                        <h2>6 Things Every High School Student Should Know About Money</h2>
+                        <h2>6 Things Every Secondary School Student Should Know About Money</h2>
 
                     </center>
 
@@ -74,7 +74,7 @@ export class Home extends React.Component {
                 <div className="split left">
 
 
-                    <h6>1. You’re Never too Young to Save</h6>
+                    <h6>1. You’re Never Too Young To Save</h6>
 
                     <p>
                         Kids can and should have savings goals and even retirement accounts. One excellent personal finance book for kids teaches that youngsters as little as 5 or 6 should have to set savings goals.
@@ -97,7 +97,7 @@ export class Home extends React.Component {
 
 
 
-                    <h6>5. College Degrees are not all Created Equal</h6>
+                    <h6>5. College Degrees Are Not All Created Equal</h6>
                     <p>
                         Choosing the right school is important, but choosing the right degree may be even more so. Sure, high school students should follow their interests and talents when choosing a career path. But they should also become familiar with the current and probable future job market.
 
@@ -118,7 +118,7 @@ export class Home extends React.Component {
                 </div>
 
                 <div className="split right">
-                    <h6>2. Compound Interest is a Beautiful Thing</h6>
+                    <h6>2. Compound Interest Is A Beautiful Thing</h6>
                     <p>
                         Explaining compound interest can help a savings-resistant teenager find motivation to stash away cash. This calculator from Investor.gov can help you calculate how much interest that Roth IRA could earn if your child starts saving right away.
                         For instance, start with $1,000 and add $25 a month for 40 years. If the investment earns 8% and is compounded annually, your high school student could have nearly $100,000 in savings well before retirement age.
@@ -126,7 +126,7 @@ export class Home extends React.Component {
                         up–much more so than if they put it in a bank account earning .01% APR.
                     </p>
 
-                    <h6>4. You Don’t Have to go into Debt to Pay for College</h6>
+                    <h6>4. You Don’t Have To Go Into Debt To Pay For College</h6>
                     <p>
                         Contrary to popular belief, student loans are not required for a college degree. Some colleges, like Davidson College in Charlotte, N.C., work with students to ensure that they don’t go into debt for school.
                         Others simply offer a great education at a fraction of the private school price.
@@ -136,7 +136,7 @@ export class Home extends React.Component {
                     </p>
 
 
-                    <h6>6. Everyone Needs an Emergency Fund</h6>
+                    <h6>6. Everyone Needs An Emergency Fund</h6>
                     <p>
                         As soon as a high school student leaves home, he or she needs an emergency fund, preferably one that doesn’t involve a line of credit. A line of credit can make a decent emergency fund for those of us with more maturity and money management experience. But for teens and twenty-somethings just beginning to manage their money, having cash to fall back on is essential.
                         In fact, it’s a good idea to help your high school student save a small emergency fund well before graduating from high school. This money can be used for emergency car repairs and other issues that might crop up during college.
