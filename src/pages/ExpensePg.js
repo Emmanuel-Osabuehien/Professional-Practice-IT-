@@ -24,6 +24,8 @@ export class ExpensePg extends React.Component {
         this.reccurMonths = this.reccurMonths.bind(this);
         this.updateDetailsData = this.updateDetailsData.bind(this);
         this.updateData = this.updateData.bind(this);
+        this.reloadPage = this.reloadPage.bind(this);
+
 
 
         this.state = {
@@ -560,6 +562,11 @@ export class ExpensePg extends React.Component {
 
     }
 
+    reloadPage(){
+        window.location.reload();
+
+    }
+
     //allows html in JAVASCRIPT
     render() {
 
@@ -626,7 +633,9 @@ export class ExpensePg extends React.Component {
                     <div className="form-group">
                         <input type='submit'
                             value='Add Info'
-                            className='btn btn-primary'></input>
+                            className='btn btn-primary'
+                            onClick={this.reloadPage}/>
+                              
                     </div>
                 </form>
 
